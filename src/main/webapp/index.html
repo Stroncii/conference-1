@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<link rel="stylesheet" type="text/css" media="all" href="css/jsDatePick_ltr.min.css">
+		
+		<script type="text/javascript" src="script/jquery.1.4.2.js"></script>
+		<script type="text/javascript" src="script/calendar/jsDatePick.jquery.min.1.3.js"></script>
+		
+		<script type="text/javascript" src="script/ajax.js"></script>
+		<script type="text/javascript" src="script/dataExchange.js"></script>
+		<script type="text/javascript" src="script/dateFormat.js"></script>
+		<script type="text/javascript" src="script/reservation.js"></script> 
+		<script type="text/javascript" src="script/validators.js"></script> 
+		<script type="text/javascript" src="script/main.js"></script> 
+		<title>Conference room reservation</title>
+	</head>
+	
+	<body onload = "init();">
+		<div id="main_container_div">
+			<div id="main_header_div">
+				<h2>Conference room reservation</h2>
+			</div>
+			<div id="date_div">
+				<div id="calendar_div"></div>
+				<div id="filter_checkbox_div">
+					<input type="checkbox" id="filter_entries" name="filter_entries" onClick="filterEntriesBoxOnClick();">Filter by date<br>
+				</div>
+			</div>	
+			<div id="reservation_div">
+				<form name="reservation_form" action="" method="POST">
+					<table id="main_reservation_form_table" class="reservation_form_table">
+						<tr>
+							<td class="title_column">
+								Enter your name:
+							</td>
+							<td class="input_column">
+								<input id="name_input" name="name_input" type="text" size="21" maxlength="20"
+									onblur="checkName();"> 
+							</td>
+							<td class="hint_column">
+								<span id="name_hint" class="hint"></span>
+							</td>
+						</tr>	
+						<tr>
+							<td class="title_column">
+								Enter your password:
+							</td>
+							<td class="input_column">
+								<input id="password_input" name="password_input" type="text" size="21" maxlength="20"
+									onblur="checkPassword();">
+							</td>
+							<td class="hint_column">
+								<span id="password_hint" class="hint"></span>
+							</td>
+						</tr>	
+						<tr>
+							<td class="title_column">
+								Enter the time, when you want to reserve this room (HH:MM):
+							</td>
+							<td class="input_column">
+								<input id="start_date_time_input" name="start_date_time_input" type="text" size="21" maxlength="5"
+									onblur="checkStartDateTime();"> 
+							</td>
+							<td class="hint_column">
+								<span id="start_date_time_hint" class="hint"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="title_column">
+								Enter duration of your reservation (HH:MM), min 1 hour, max 10 hours:
+							</td>
+							<td class="input_column">
+								<input id="duration_input" name="duration_input" type="text" size="21" maxlength="5"
+									onblur="checkDuration();"> 
+							</td>
+							<td class="hint_column">
+								<span id="duration_hint" class="hint"></span>
+							</td>
+						</tr>
+					</table>
+					<p><input type="checkbox" id="repeat_input" name="repeat_input" onClick="repeatCheckBoxOnClick();">Repeat reservation many times<br></p>
+					<table id="extended_reservation_form_table" class="reservation_form_table">	
+						<tr id="period_tr">
+							<td class="title_column">
+								Enter period (days) between reservations:
+							</td>
+							<td class="input_column">
+								<input id="period_input" name="period_input" type="text" size="20" maxlength="2"
+									onblur="checkPeriod()"> 
+							</td>
+							<td class="hint_column">
+								<span id="period_hint" class="hint"></span>
+							</td>
+						</tr>
+						<tr id="reservations_number_tr">
+							<td class="title_column">
+								Enter number of reservations:
+							</td>
+							<td class="input_column">
+								<input id="reservations_number_input" name="reservations_number_input" type="text" size="20" maxlength="2"
+									onblur="checkReservationsNumber()"> 
+							</td>
+							<td class="hint_column">
+								<span id="reservations_number_hint" class="hint"></span>
+							</td>
+						</tr>
+					</table>
+					<p><input type="button" id="reserve_button" value="Reserve" onclick="reserveButtonOnClick();">
+					<input type="button" id="reset_button" value="Reset" onclick="resetButtonOnClick();"></p>
+				</form>
+			</div><!--reservation_div-->	
+			<div id="reservations_list_header_div">
+				<h3>Reservations list</h3>
+			</div>
+			<div id="reservations_list_div">
+			</div>
+		</div><!--main_container_div-->
+	</body>
+</html>

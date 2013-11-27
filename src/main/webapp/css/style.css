@@ -1,0 +1,132 @@
+@charset "utf-8";
+/* CSS Document */
+
+body    {
+	overflow-y:scroll;
+}
+
+h2 {
+    margin: 0;
+}
+
+h3 {
+    margin: 0;
+}
+
+/*id*/
+
+#main_container_div {
+	background-color: #FFFFFF;
+	width: 1000px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#main_header_div {
+	padding-top: 20px;
+	padding-bottom: 50px;
+}
+
+#date_div {
+	float: left;
+}
+
+#calendar_div {
+	height: 258px;
+}
+
+#filter_checkbox_div {
+}
+
+#reservation_div {
+	width: 700px;
+	float: right;
+}
+
+#reservations_list_header_div {
+	clear: both;
+	padding: 30px 0 40px 0;
+}
+
+#reservations_list_div {
+}
+
+#filter_entries {
+	margin: 10px 10px 10px 0;
+}
+
+#repeat_input {
+	margin: 10px 10px 10px 0;
+}
+
+#reserve_button {
+	width: 80px;
+	height: 40px;
+	margin: 0 45px 0 0;
+}
+
+#reset_button {
+	width: 80px;
+	height: 40px;
+	margin: 0 0 0 0;
+}
+
+/*classes*/
+
+div.field {
+  margin-bottom:5px;
+  text-align:left;
+}
+span.help {
+  color:#660000;
+  font-style:italic;
+}
+
+/*reservation_form_table*/
+
+table.reservation_form_table  tr td {
+	height: 40px;
+	vertical-align:text-top;
+	padding: 5px;
+}
+
+table.reservation_form_table td.title_column { 
+    width: 30%; 
+    text-align: right; 
+    padding-right: 10px; 
+    color: #404040;
+}
+
+table.reservation_form_table td.input_column { 
+    width: 25%; 
+    text-align: left; 
+    color: #404040;
+}
+
+table.reservation_form_table td.hint_column { 
+    width: 45%; 
+    text-align: left; 
+    color: #404040;
+}
+
+/*reservation_entry_table */
+
+table.reservation_entry_table  {
+	width: 100%;
+}
+
+table.reservation_entry_table  tr td {
+	padding: 5px;
+}
+
+table.reservation_entry_table td.title_column { 
+    width: 15%; 
+}
+
+table.reservation_entry_table td.text_column { 
+    width: 30%; 
+}
+
+table.reservation_entry_table td.button_column { 
+    width: 55%; 
+}
