@@ -33,13 +33,23 @@ function showReservationsList(target, dateFilter) {
 		}
 		
 		if (i % 2 == 0) {
-			entriesText += "<div style='background-color: #DDDDDD'>";
+			entriesText += "<div class='whole_reservation_div' style='background-color: #DDDDDD'>";
 		}
 		else {
-			entriesText += "<div>";
+			entriesText += "<div class='whole_reservation_div'>";
 		}
 		
-		entriesText += "<table class='reservation_entry_table'>" + 
+		entriesText += "<span class='title_elem'>On</span><span class='text_elem'>" + 
+			reservationsList[i].startDateTime.shortDateFormat() + "</span>" + 
+			"<div class='separator'></div>" + 
+			"<span class='title_elem'>Duration</span><span class='text_elem'>" + 
+			reservationsList[i].startDateTime.shortTimeFormat() + "-" + 
+			reservationsList[i].endDateTime.shortTimeFormat() + "</span>" + 
+			"<div class='separator'></div>" + 
+			"<span class='title_elem'>Reserved by</span><span class='text_elem'>" + 
+			reservationsList[i].client + "</span>" + "</div>";
+		
+		/*entriesText += "<table class='reservation_entry_table'>" + 
 			"<tr><td class='title_column'>On</td><td class='text_column'>" + 
 			reservationsList[i].startDateTime.shortDateFormat() + "</td><td class='button_column'></td></tr>" + 
 			"<tr><td class='title_column'>Duration</td><td class='text_column'>" + 
@@ -47,29 +57,20 @@ function showReservationsList(target, dateFilter) {
 			reservationsList[i].endDateTime.shortTimeFormat() + "</td><td class='button_column'></td></tr>" + 
 			"<tr><td class='title_column'>Reserved by</td><td class='text_column'>" + 
 			reservationsList[i].client + "</td><td class='button_column'></td></tr>" + 
-			"</table></div>";
+			"</table></div>";*/
 	}
 	
 	target.innerHTML = entriesText;
 }
 
 function showRepeatInput(isVisible) {
-	
-	var displayStyle;
-	
+		
 	if(isVisible == undefined) {
 		return;
 	}
 	
-	if(isVisible == true) {
-		displayStyle = "table-row";
-	}
-	else {
-		displayStyle = "none";
-	}
-	
-	document.getElementById("period_tr").style.display=displayStyle;
-	document.getElementById("reservations_number_tr").style.display=displayStyle;
+	var displayStyle = (isVisible == true) ? "table-row" : displayStyle = "none";	
+	$("#repeat_input").parent().nextAll(".whole_input_div").css("display", displayStyle);
 }
 
 function checkReservationPossibility(startDateTime, endDateTime) {
