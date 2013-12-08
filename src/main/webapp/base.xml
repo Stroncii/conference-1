@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><base>
-	<clients>
-	<client name="Client_1"><password>1111</password></client><client name="Client_2"><password>2222</password></client><client name="Client_3"><password>3333</password></client></clients>
-	<reservations>
-	<reservation><clientname>Client_1</clientname><startdatetime>1385636400000</startdatetime><enddatetime>1385650800000</enddatetime></reservation><reservation><clientname>Client_2</clientname><startdatetime>1385566800000</startdatetime><enddatetime>1385575800000</enddatetime></reservation><reservation><clientname>Client_2</clientname><startdatetime>1385619600000</startdatetime><enddatetime>1385625000000</enddatetime></reservation><reservation><clientname>Client_3</clientname><startdatetime>1385708400000</startdatetime><enddatetime>1385728200000</enddatetime></reservation></reservations>
-</base>
