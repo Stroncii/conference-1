@@ -78,6 +78,8 @@ $(document).ready(function() {
 	clients();
 	reservations();
 	placeCalendar();
+	placeStartDateTimePicker();
+	placeDurationDateTimePicker();
 	showReservationsList(document.getElementById("reservations_list_div"));
 	showRepeatInput(false);
 });
@@ -98,6 +100,26 @@ function placeCalendar() {
 				showReservationsList(document.getElementById("reservations_list_div"), currentDate());
 			}
 		});
+}
+
+function placeStartDateTimePicker() {
+
+	$("#start_date_time_input").datetimepicker({
+		datepicker: false,
+		format:"H:i"
+	});
+}
+
+function placeDurationDateTimePicker() {
+
+	$("#duration_input").datetimepicker({
+		datepicker: false,
+		format:"H:i",
+		allowTimes:[
+			'00:00', '02:00', '03:00', '04:00', '05:00',
+			'06:00', '07:00', '08:00', '09:00', '10:00'
+		]
+	});
 }
 
 function checkName() {
@@ -170,10 +192,10 @@ function reserveButtonOnClick() {
 		document.getElementById("password_input").focus();
 		return;
 	}
-	if (!validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"))) {
+	/*if (!validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"))) {
 		document.getElementById("start_date_time_input").focus();
 		return;
-	}
+	}*/
 	if (!validateDuration(document.getElementById("duration_input"), document.getElementById("duration_hint"))) {
 		document.getElementById("duration_input").focus();
 		return;

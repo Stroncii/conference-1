@@ -82,8 +82,8 @@ function validateDuration (inputField, hintField) {
 		return false;
 	}
 	
-	regExp = /^([01]?[0-9]|2[0-3]):[0-5]0$/;
-	hintMessage = "Should be continued 00, 10, 20... minutes!";
+	regExp = /^([0]?[0-9]|10):[0-5]0$/;
+	hintMessage = "Should be continued 0..10 hours and 00, 10, 20... minutes!";
 	
 	return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 }
