@@ -69,3 +69,26 @@ function showReservationsList(target, dateFilter) {
 	
 	target.innerHTML = entriesText;
 }
+
+function checkReservationPossibility(startDateTime, endDateTime) {
+	
+	var reservationsList = reservations().get();
+	
+	if (startDateTime == undefined || endDateTime == undefined) {
+		return false;
+	}
+	
+	for (var i = 0, j = reservationsList.length; i < j; i++) {
+		
+		if ((reservationsList[i].startDateTime <= startDateTime && startDateTime <= reservationsList[i].endDateTime) ||
+			(reservationsList[i].startDateTime <= endDateTime   && endDateTime   <= reservationsList[i].endDateTime) ||
+			(startDateTime <= reservationsList[i].startDateTime && reservationsList[i].startDateTime <= endDateTime) ||
+			(startDateTime <= reservationsList[i].endDateTime   && reservationsList[i].endDateTime   <= endDateTime)) {
+			
+		//	alert(reservationsList[i].startDateTime + "\n" + reservationsList[i].endDateTime + "\n" + 
+		//			startDateTime + "\n" + endDateTime);
+			return false;
+		}
+	}
+	return true;
+}

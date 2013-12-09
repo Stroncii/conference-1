@@ -10,17 +10,14 @@ function clients() {
 		clients.data = [ new Client("Client_1", "1111"),
 						 new Client("Client_2", "2222")
 		];
+		clients.names = new Array();
+		for (var i = 0; i < clients.data.length; i++) {
+			clients.names.push(clients.data[i].name);
+		}
 	}
 	
 	return {
-		get: function() { 
-				var names = new Array();
-				for (var i = 0; i < clients.data.length; i++) {
-					names.push(clients.data[i].name);
-				}
-				return names; 
-			},
-			
+	
 		add: function(newClient) {
 				if (newClient != undefined) {
 					clients.data.push(newClient);
@@ -34,6 +31,15 @@ function clients() {
 					}
 				}	
 				return false;
-			}		
+			},
+		
+		has: function(name) {
+			if (clients.names.indexOf(name) != -1) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
 }

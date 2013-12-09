@@ -27,7 +27,7 @@
 			<div id="date_div">
 				<div id="calendar_div"></div>
 				<div id="filter_checkbox_div">
-					<input type="checkbox" id="filter_entries" name="filter_entries" onClick="filterEntriesBoxOnClick();">Filter by date<br>
+					<input type="checkbox" id="filter_entries" name="filter_entries">Filter by date<br>
 				</div>
 			</div>	
 			<div id="reservation_div">
@@ -35,45 +35,45 @@
 					<div class="whole_input_div">
 						<span class="title_elem">Enter your name:</span>
 						<input id="name_input" name="name_input" class="input_elem"
-							type="text" size="21" maxlength="20" onblur="checkName();"> 
+							type="text" size="21" maxlength="20"> 
 						<span id="name_hint" class="hint_elem"></span>
 					</div>
 					<div class="whole_input_div">
 						<span class="title_elem">Enter your password:</span>
 						<input id="password_input" name="password_input" class="input_elem"
-							type="text" size="21" maxlength="20" onblur="checkPassword();"> 
+							type="text" size="21" maxlength="20"> 
 						<span id="password_hint" class="hint_elem"></span>
 					</div>
 					<div class="whole_input_div">
 						<span class="title_elem">Enter the time, when you want to reserve this room (HH:MM):</span>
 						<input id="start_date_time_input" name="start_date_time_input" class="input_elem"
-							type="text" size="21" maxlength="5" onblur="checkStartDateTime();">
+							type="text" size="21" maxlength="5">
 						<span id="start_date_time_hint" class="hint_elem"></span>
 					</div>
 					<div class="whole_input_div">
 						<span class="title_elem">Enter duration of your reservation (HH:MM), min 1 hour, max 10 hours:</span>
 						<input id="duration_input" name="duration_input" class="input_elem"
-							type="text" size="21" maxlength="5" onblur="checkDuration();"> 
+							type="text" size="21" maxlength="5"> 
 						<span id="duration_hint" class="hint_elem"></span>
 					</div>
 						
-					<p><input type="checkbox" id="repeat_input" name="repeat_input" onClick="repeatCheckBoxOnClick();">Repeat reservation many times<br></p>
+					<p><input type="checkbox" id="repeat_check_box" name="repeat_check_box">Repeat reservation many times<br></p>
 					
 					<div class="whole_input_div">
 						<span class="title_elem">Enter period (days) between reservations:</span>
 						<input id="period_input" name="period_input" class="input_elem"
-							type="text" size="20" maxlength="2"	onblur="checkPeriod()"> 
+							type="text" size="20" maxlength="2"> 
 						<span id="period_hint" class="hint_elem"></span>
 					</div>
 					<div class="whole_input_div">
 						<span class="title_elem">Enter number of reservations:</span>
 						<input id="reservations_number_input" name="reservations_number_input" class="input_elem"
-							type="text" size="20" maxlength="2"	onblur="checkReservationsNumber()"> 
+							type="text" size="20" maxlength="2"> 
 						<span id="reservations_number_hint" class="hint_elem"></span>
 					</div>
 					
-					<p><input type="button" id="reserve_button" value="Reserve" onclick="reserveButtonOnClick();">
-					<input type="button" id="reset_button" value="Reset" onclick="resetButtonOnClick();"></p>
+					<p><input type="button" id="reserve_button" value="Reserve">
+					<input type="button" id="reset_button" value="Reset"></p>
 				</form>
 			</div><!--reservation_div-->	
 			<div id="reservations_list_header_div">

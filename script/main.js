@@ -1,4 +1,5 @@
-﻿function currentDate(dateParam) {
+﻿//stores current date (can not take it direct from calendar widget)
+function currentDate(dateParam) {
 	
 	if (dateParam != undefined) {
 		currentDate.date = dateParam;
@@ -6,38 +7,47 @@
 	return currentDate.date;
 }
 
-function showRepeatInput(isVisible) {
+//add widgets on html page
+
+function placeCalendar() {
+
+	var calendar = new JsDatePick({
+			useMode:1,
+			isStripped:true,
+			target: "calendar_div",
+			cellColorScheme:"beige"
+		});
 		
-	if(isVisible == undefined) {
-		return;
-	}
-	
-	var displayStyle = (isVisible == true) ? "table-row" : displayStyle = "none";	
-	$("#repeat_input").parent().nextAll(".whole_input_div").css("display", displayStyle);
+	calendar.setOnSelectedDelegate(function(){
+			var obj = calendar.getSelectedDay(); 
+			currentDate(new Date(obj.year, obj.month - 1, obj.day)); 
+			if ($("#filter_entries").get(0).checked) {
+				showReservationsList(document.getElementById("reservations_list_div"), currentDate());
+			}
+		});
 }
 
-function checkReservationPossibility(startDateTime, endDateTime) {
-	
-	var reservationsList = reservations().get();
-	
-	if (startDateTime == undefined || endDateTime == undefined) {
-		return false;
-	}
-	
-	for (var i = 0; i < reservationsList.length; i++) {
-		
-		if ((reservationsList[i].startDateTime <= startDateTime && startDateTime <= reservationsList[i].endDateTime) ||
-			(reservationsList[i].startDateTime <= endDateTime   && endDateTime   <= reservationsList[i].endDateTime) ||
-			(startDateTime <= reservationsList[i].startDateTime && reservationsList[i].startDateTime <= endDateTime) ||
-			(startDateTime <= reservationsList[i].endDateTime   && reservationsList[i].endDateTime   <= endDateTime)) {
-			
-		//	alert(reservationsList[i].startDateTime + "\n" + reservationsList[i].endDateTime + "\n" + 
-		//			startDateTime + "\n" + endDateTime);
-			return false;
-		}
-	}
-	return true;
+function placeStartDateTimePicker() {
+
+	$("#start_date_time_input").datetimepicker({
+		datepicker: false,
+		format:"H:i"
+	});
 }
+
+function placeDurationDateTimePicker() {
+
+	$("#duration_input").datetimepicker({
+		datepicker: false,
+		format:"H:i",
+		allowTimes:[
+			'00:00', '02:00', '03:00', '04:00', '05:00',
+			'06:00', '07:00', '08:00', '09:00', '10:00'
+		]
+	});
+}
+
+//read values from input elements
 
 function getStartDateTimeFromInput() {
 	
@@ -74,102 +84,67 @@ function getEndDateTimeFromInput() {
 
 $(document).ready(function() {
 	
-	currentDate(new Date());
-	clients();
-	reservations();
+	currentDate(new Date());		//init current date
+	clients();						//init local list of clients
+	reservations();					//init local list of reervations
+	
 	placeCalendar();
 	placeStartDateTimePicker();
 	placeDurationDateTimePicker();
+	
+	$("#filter_entries").click(filterEntriesBoxOnClick);
+	$("#name_input").blur(checkName);
+	$("#password_input").blur(checkPassword);
+	$("#start_date_time_input").blur(checkStartDateTime);
+	$("#duration_input").blur(checkDuration);
+	$("#repeat_check_box").click(repeatCheckBoxOnClick);
+	$("#period_input").blur(checkPeriod);
+	$("#reservations_number_input").blur(checkReservationsNumber);
+	$("#reserve_button").click(reserveButtonOnClick);
+	$("#reset_button").click(resetButtonOnClick);
+	
+	repeatCheckBoxOnClick();
 	showReservationsList(document.getElementById("reservations_list_div"));
-	showRepeatInput(false);
 });
-
-function placeCalendar() {
-
-	var calendar = new JsDatePick({
-			useMode:1,
-			isStripped:true,
-			target: "calendar_div",
-			cellColorScheme:"beige"
-		});
-		
-	calendar.setOnSelectedDelegate(function(){
-			obj = calendar.getSelectedDay(); 
-			currentDate(new Date(obj.year, obj.month - 1, obj.day)); 
-			if ($("#filter_entries").get(0).checked) {
-				showReservationsList(document.getElementById("reservations_list_div"), currentDate());
-			}
-		});
-}
-
-function placeStartDateTimePicker() {
-
-	$("#start_date_time_input").datetimepicker({
-		datepicker: false,
-		format:"H:i"
-	});
-}
-
-function placeDurationDateTimePicker() {
-
-	$("#duration_input").datetimepicker({
-		datepicker: false,
-		format:"H:i",
-		allowTimes:[
-			'00:00', '02:00', '03:00', '04:00', '05:00',
-			'06:00', '07:00', '08:00', '09:00', '10:00'
-		]
-	});
-}
 
 function checkName() {
 	
 	var inputField = document.getElementById("name_input");
 	var hintField = document.getElementById("name_hint"); 
-	var clientsList = clients().get();
 	
 	if (!validateName(inputField, hintField)) {
 		return;
-	}
-	
-	if (clientsList.indexOf(inputField.value) != -1) {
-		hintField.innerHTML = "Такой пользователь уже есть в базе (нужен его пароль)";
-	}
-	else {
-		hintField.innerHTML = "Такого пользователя нет в базе (будет добавлен)";
-	}
+	}	
+	hintField.innerHTML = (clients().has(inputField.value)) ? 
+		"Такой пользователь уже есть в базе (нужен его пароль)" : "Такого пользователя нет в базе (будет добавлен)";
 }
 
 function checkPassword() {
-
 	validatePassword(document.getElementById("password_input"), document.getElementById("password_hint"));
 }
 
-function checkStartDateTime() {
-	
+function checkStartDateTime() {	
 	validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"));
 	//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 }
 
 function checkDuration() {
-
 	validateDuration(document.getElementById("duration_input"), document.getElementById("duration_hint"));
 	//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 }
 
 function checkPeriod() {
-	
 	validatePeriod(document.getElementById("period_input"), document.getElementById("period_hint"));
 }
 
 function checkReservationsNumber() {
-	
 	validateReservationsNumber(document.getElementById("reservations_number_input"), document.getElementById("reservations_number_hint"));
 }
 
 function repeatCheckBoxOnClick() {
 	
-	showRepeatInput(document.getElementById("repeat_input").checked);
+	var displayStyle = (document.getElementById("repeat_check_box").checked) ? "table-row" : displayStyle = "none";	
+	$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", displayStyle);
 }
 
 function filterEntriesBoxOnClick() {
@@ -192,10 +167,10 @@ function reserveButtonOnClick() {
 		document.getElementById("password_input").focus();
 		return;
 	}
-	/*if (!validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"))) {
+	if (!validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"))) {
 		document.getElementById("start_date_time_input").focus();
 		return;
-	}*/
+	}
 	if (!validateDuration(document.getElementById("duration_input"), document.getElementById("duration_hint"))) {
 		document.getElementById("duration_input").focus();
 		return;
@@ -204,7 +179,7 @@ function reserveButtonOnClick() {
 	var period = 0;
 	var reservationsNumber = 1;
 	
-	if (document.getElementById("repeat_input").checked) {
+	if (document.getElementById("repeat_check_box").checked) {
 	
 		if (!validatePeriod(document.getElementById("period_input"), document.getElementById("period_hint"))) {
 			document.getElementById("period_input").focus();
@@ -234,7 +209,6 @@ function reserveButtonOnClick() {
 	var startDateTime = getStartDateTimeFromInput();
 	var endDateTime = getEndDateTimeFromInput();
 	
-	var clientsList = clients().get();
 	var newClient = null;
 	var newReservations = new Array();
 	
@@ -244,7 +218,7 @@ function reserveButtonOnClick() {
 		return;
 	}
 	
-	if (clientsList.indexOf(name) == -1) {
+	if (!clients().has(name)) {
 		newClient = name;
 	}
 	else {
@@ -276,6 +250,7 @@ function reserveButtonOnClick() {
 	reservations().add(newReservations);
 	
 	filterEntriesBoxOnClick();
+	alert("New reservation was successfully added");
 }
 
 function resetButtonOnClick() {
