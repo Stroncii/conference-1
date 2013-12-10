@@ -15,6 +15,15 @@ h3 {
     margin: 0;
 }
 
+.ui-button .ui-button-text {
+  font-size:63.5% /* or whatever you want.*/
+}
+
+.ui-dialog .ui-dialog-title {
+  font-size:63.5% /* or whatever you want.*/
+}
+
+
 /*id*/
 
 #main_container_div {

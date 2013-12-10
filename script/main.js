@@ -199,7 +199,7 @@ function reserveButtonOnClick() {
 		
 		reservationsNumber = parseInt(document.getElementById("reservations_number_input").value);
 		if (reservationsNumber < 1 || reservationsNumber > 10) {
-			document.getElementById("reservations_number__hint").innerHTML = "Please enter a value between 1 and 10.";
+			document.getElementById("reservations_number_hint").innerHTML = "Please enter a value between 1 and 10.";
 			return;
 		}
 	}
@@ -219,7 +219,7 @@ function reserveButtonOnClick() {
 	}
 	
 	if (!clients().has(name)) {
-		newClient = name;
+		newClient = new Client(name, password);
 	}
 	else {
 		if (clients().checkPass(name, password) == false) {
@@ -236,7 +236,7 @@ function reserveButtonOnClick() {
 			return;
 		}	
 		
-		reservation = new Reservation(null, name, new Date(startDateTime), new Date(endDateTime), "0");
+		reservation = new Reservation(null, name, new Date(startDateTime), new Date(endDateTime), 0);
 		newReservations.push(reservation);
 		
 		startDateTime.setDate(startDateTime.getDate() + period);
@@ -280,7 +280,61 @@ function cancelButtonClick() {
 		$(".cancel_hint[data-id='" + id + "']").text("Wrong password!");
 		return;
 	}
+	$(".cancel_hint[data-id='" + id + "']").text("");
 	
-	reservations().cancel(id);
-	showReservationsList(document.getElementById("reservations_list_div"));
+	if (reservationToCancel.sequence != "0") {
+		
+		$(function() {
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:140,
+				width: 700, 
+				modal: true,
+				title: "This reservation belongs to sequence. Cancel only this reservation or all of them?",
+			  
+				buttons: {
+					"Cancel only this reservation": function() {
+							reservations().cancel(id);
+							showReservationsList(document.getElementById("reservations_list_div"));
+							$( this ).dialog( "close" );
+						},
+						
+					"Cancel all sequence": function() {
+							reservations().cancelSequence(reservationToCancel.sequence);
+							showReservationsList(document.getElementById("reservations_list_div"));
+							$( this ).dialog( "close" );
+						},
+						
+					"Do not cancel anything": function() {
+							$( this ).dialog( "close" );
+						}
+				}
+			});
+		});
+	}
+	else {
+		
+		$(function() {
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:140,
+				width: 700, 
+				modal: true,
+				title: "Are you really want cancel this reservation?",
+			  
+				buttons: {
+					"Yes": function() {
+							reservations().cancel(id);
+							showReservationsList(document.getElementById("reservations_list_div"));
+							$( this ).dialog( "close" );
+						},
+						
+					"No": function() {
+							$( this ).dialog( "close" );
+						},
+				}
+			});
+		});
+	}
+	
 }

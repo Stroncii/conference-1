@@ -11,12 +11,15 @@ function reservations() {
 
 	if (reservations.data == undefined) {
 		reservations.data = [
-			new Reservation(1, "Client_1", new Date(2013, 11, 10, 6, 0), new Date(2013, 11, 8, 9, 0), "0"),
-			new Reservation(2, "Client_1", new Date(2013, 11, 11, 17, 50), new Date(2013, 11, 8, 19, 20), "0"),	
-			new Reservation(3, "Client_2", new Date(2013, 11, 12, 16, 30), new Date(2013, 11, 8, 19, 00), "0"),
-			new Reservation(4, "Client_1", new Date(2013, 11, 13, 13, 00), new Date(2013, 11, 8, 15, 00), "0")
+			new Reservation(1, "Client_1", new Date(2013, 11, 10, 06, 00), new Date(2013, 11, 8, 09, 00), 0),
+			new Reservation(2, "Client_1", new Date(2013, 11, 11, 17, 50), new Date(2013, 11, 8, 19, 20), 0),	
+			new Reservation(3, "Client_2", new Date(2013, 11, 12, 16, 30), new Date(2013, 11, 8, 19, 00), 1),
+			new Reservation(4, "Client_1", new Date(2013, 11, 13, 13, 00), new Date(2013, 11, 8, 15, 00), 0),
+			new Reservation(5, "Client_2", new Date(2013, 11, 14, 16, 30), new Date(2013, 11, 8, 19, 00), 1),
+			new Reservation(6, "Client_2", new Date(2013, 11, 09, 16, 30), new Date(2013, 11, 8, 19, 00), 1)
 		];
-		reservations.nextId = 5;
+		reservations.nextId = 7;
+		reservations.nextSequence = 2;
 	}
 	
 	return {
@@ -38,10 +41,28 @@ function reservations() {
 			
 		add: function(newReservations) {
 		
-				for (var i = 0; i < newReservations.length; i++) {
+				for (var i = 0, j = newReservations.length; i < j; i++) {
+					if (j > 1) {
+						newReservations[i].sequence = reservations.nextSequence;
+					}
 					newReservations[i].id = reservations.nextId;
 					reservations.data.push(newReservations[i]);
 					reservations.nextId++;
+				}
+				if (j > 1) {
+					reservations.nextSequence++;
+				}
+			},
+			
+		cancelSequence: function(sequence) {
+			
+				var currentDate = new Date();
+			
+				for (var i = 0; i < reservations.data.length; i++) {
+					if (reservations.data[i].sequence == sequence && reservations.data[i].startDateTime > currentDate) {
+							reservations.data.splice(i, 1);
+							i--;
+					}
 				}
 			},
 			
