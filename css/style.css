@@ -114,25 +114,34 @@ span.help {
 	/* reservations list */
 
 .whole_reservation_div {
-	height: 80px;
+	height: 90px;
 	padding: 5px;
 }
 
-.whole_reservation_div  > span.title_elem{
+.whole_reservation_div  > span.title_elem {
 	width: 100px;
 	padding: 2px 0;
 	float: left;
 }
 
-.whole_reservation_div  > span.text_elem{
+.whole_reservation_div  > span.text_elem {
 	width: 300px;
+	height: 24px;
 	padding: 2px 0;
 	float: left;
 }
 
-.whole_reservation_div  > div.separator{
+.whole_reservation_div  > div.separator {
 	height: 1px;
 	width: 100%;
 	padding: 2px 0;
 	clear: both;
+}
+
+.whole_reservation_div  > input.cancel_button {
+	height: 30px;
+}
+
+.whole_reservation_div  > span.cancel_hint {
+	padding: 0 0 0 10px;
 }

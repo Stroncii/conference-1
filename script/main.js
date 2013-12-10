@@ -236,7 +236,7 @@ function reserveButtonOnClick() {
 			return;
 		}	
 		
-		reservation = new Reservation(name, new Date(startDateTime), new Date(endDateTime), "0");
+		reservation = new Reservation(null, name, new Date(startDateTime), new Date(endDateTime), "0");
 		newReservations.push(reservation);
 		
 		startDateTime.setDate(startDateTime.getDate() + period);
@@ -257,4 +257,30 @@ function resetButtonOnClick() {
 
 	$(".input_elem").val("");
 	$(".hint_elem").html("");
+}
+
+function cancelButtonClick() {
+	
+	var id = parseInt($(this).data("id"));
+	var reservationToCancel = reservations().get(id);
+	
+	if (reservationToCancel == null) {
+		$(".cancel_hint[data-id='" + id + "']").text("Strangely, but it seems this reservation was already cancelled");
+		return;
+	}
+	
+	var name = document.getElementById("name_input").value;
+	var password = document.getElementById("password_input").value;
+	
+	if (reservationToCancel.client != name) {
+		$(".cancel_hint[data-id='" + id + "']").text("This reservation was made by another user! You can not cancel it.");
+		return;
+	}
+	if (clients().checkPass(name, password) == false) {
+		$(".cancel_hint[data-id='" + id + "']").text("Wrong password!");
+		return;
+	}
+	
+	reservations().cancel(id);
+	showReservationsList(document.getElementById("reservations_list_div"));
 }
