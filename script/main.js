@@ -92,16 +92,16 @@ $(document).ready(function() {
 	placeStartDateTimePicker();
 	placeDurationDateTimePicker();
 	
-	$("#filter_entries").click(filterEntriesBoxOnClick);
-	$("#name_input").blur(checkName);
-	$("#password_input").blur(checkPassword);
-	$("#start_date_time_input").blur(checkStartDateTime);
-	$("#duration_input").blur(checkDuration);
-	$("#repeat_check_box").click(repeatCheckBoxOnClick);
-	$("#period_input").blur(checkPeriod);
-	$("#reservations_number_input").blur(checkReservationsNumber);
-	$("#reserve_button").click(reserveButtonOnClick);
-	$("#reset_button").click(resetButtonOnClick);
+	$("#filter_entries").on("click", filterEntriesBoxOnClick);
+	$("#name_input").on("blur", checkName);
+	$("#password_input").on("blur", checkPassword);
+	$("#start_date_time_input").on("blur", checkStartDateTime);
+	$("#duration_input").on("blur", checkDuration);
+	$("#repeat_check_box").on("click", repeatCheckBoxOnClick);
+	$("#period_input").on("blur", checkPeriod);
+	$("#reservations_number_input").on("blur", checkReservationsNumber);
+	$("#reserve_button").on("click", reserveButtonOnClick);
+	$("#reset_button").on("click", resetButtonOnClick);
 	
 	repeatCheckBoxOnClick();
 	showReservationsList(document.getElementById("reservations_list_div"));
