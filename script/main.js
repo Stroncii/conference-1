@@ -127,7 +127,8 @@
 		$("#reset_button").on("click", resetButtonOnClick);
 		
 		repeatCheckBoxOnClick();
-		reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+		reservations.reloadList(function(){
+			reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick)});
 	});
 
 	function checkName() {
