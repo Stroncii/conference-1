@@ -9,7 +9,7 @@
 		this.sequence = sequence;
 	}
 
-	var reservationsArray;/* = [
+	var reservationsArray = new Array();/* = [
 		new Reservation(1, "Client_1", new Date(2013, 11, 10, 06, 00), new Date(2013, 11, 10, 09, 00), 0),
 		new Reservation(2, "Client_1", new Date(2013, 11, 11, 17, 50), new Date(2013, 11, 11, 19, 20), 0),	
 		new Reservation(3, "Client_2", new Date(2013, 11, 12, 16, 30), new Date(2013, 11, 12, 19, 00), 1),
@@ -30,9 +30,7 @@
 			cancelSequence: 	cancelSequenceFunction,			
 	
 			showList:			showReservationsListFunction,
-			checkPossibility:	checkReservationPossibilityFunction,		
-			
-			reloadList:			reloadListFunction 		
+			checkPossibility:	checkReservationPossibilityFunction,			
 	});
 	
 	function createFunction(id, client, startDateTime, endDateTime, sequence) {
@@ -56,8 +54,8 @@
 	}
 	
 	function addFunction(newReservations) {
-			
-		for (var i = 0, j = newReservations.length; i < j; i++) {
+		
+		/*for (var i = 0, j = newReservations.length; i < j; i++) {
 			if (j > 1) {
 				newReservations[i].sequence = nextSequence;
 			}
@@ -67,7 +65,8 @@
 		}
 		if (j > 1) {
 			nextSequence++;
-		}
+		}*/
+		reservationsArray = reservationsArray.concat(newReservations);
 	}
 	
 	function cancelFunction(id) {
@@ -167,26 +166,6 @@
 			}
 		}
 		return true;
-	}
-	
-	function reloadListFunction(onReload) {
-	
-		$.get("/load", function(data) {
-		
-			reservationsArray = new Array();
-			
-			for (var i = 0, j = data.length; i < j; i++) {
-				reservationsArray.push(new Reservation(data[i].id, data[i].client, 
-					new Date(data[i].start_date_time.year, data[i].start_date_time.month, data[i].start_date_time.day,
-						data[i].start_date_time.hour, data[i].start_date_time.minute),
-					new Date(data[i].end_date_time.year, data[i].end_date_time.month, data[i].end_date_time.day,
-						data[i].end_date_time.hour, data[i].end_date_time.minute),	
-					data[i].sequence));
-			}	
-			
-			onReload();
-			
-		}, "json");
 	}
 	
 })();//anonymous function

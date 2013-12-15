@@ -6,14 +6,8 @@
 		this.password = password;
 	}
 
-	var clientsArray = [ new Client("Client_1", "1111"),
-						 new Client("Client_2", "2222")];
-	
+	var clientsArray = new Array();
 	var namesArray = new Array();
-	
-	for (var i = 0; i < clientsArray.length; i++) {
-		namesArray.push(clientsArray[i].name);
-	}
 		
 	window.initVariables().initClients( {
 		
@@ -27,10 +21,10 @@
 		return new Client(name, password);
 	}
 	
-	function addFunction(newClient) {
-	
-		if (newClient != undefined) {
-			clientsArray.push(newClient);
+	function addFunction(newClients) {
+		clientsArray = clientsArray.concat(newClients);
+		for (var i = 0; i < newClients.length; i++) {
+			namesArray.push(newClients[i].name);
 		}
 	}
 	

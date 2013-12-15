@@ -104,6 +104,59 @@
 
 		return endDateTime;
 	}
+	
+	//ajax
+	
+	function loadData(onLoad) {
+	
+		$.get("/load", function(data) {
+		
+			var loadedReservations = data.reservations;		
+			for (var i = 0, j = data.reservations.length; i < j; i++) {
+				loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
+				loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
+			}
+			reservations.add(loadedReservations);		
+			
+			var loadedClients = data.clients;
+			clients.add(loadedClients);
+			
+			onLoad();
+	
+		}, "json");
+	}
+	
+	function addData(name, password, startDateTime, endDateTime, period, reservationsNumber, onAdd) {
+	
+		$.get("/add", {client: name, password: password, startDateTime: startDateTime, 
+			endDateTime: endDateTime, period: period, reservationsNumber: reservationsNumber}, 
+			function(data) {
+			
+				var loadedReservations = data.reservations;		
+				for (var i = 0, j = data.reservations.length; i < j; i++) {
+					loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
+					loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
+				}
+				reservations.add(loadedReservations);		
+				
+				var loadedClients = data.clients;
+				clients.add(loadedClients);
+				
+				onAdd(data.message);
+			
+				/*for (var i = 0, j = data.length; i < j; i++) {
+					loadedReservations.push(reservations.create(data[i].id, data[i].client, 
+						new Date(data[i].start_date_time.year, data[i].start_date_time.month, data[i].start_date_time.day,
+							data[i].start_date_time.hour, data[i].start_date_time.minute),
+						new Date(data[i].end_date_time.year, data[i].end_date_time.month, data[i].end_date_time.day,
+							data[i].end_date_time.hour, data[i].end_date_time.minute),	
+						data[i].sequence));
+				}	
+				
+				reservations.add(loadedReservations);	*/
+			
+		}, "json");
+	}
 
 	//Event listeners
 
@@ -127,7 +180,7 @@
 		$("#reset_button").on("click", resetButtonOnClick);
 		
 		repeatCheckBoxOnClick();
-		reservations.reloadList(function(){
+		loadData(function(){	
 			reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick)});
 	});
 
@@ -233,7 +286,7 @@
 		var startDateTime = getStartDateTimeFromInput();
 		var endDateTime = getEndDateTimeFromInput();
 		
-		var newClient = null;
+		var newClients = new Array();
 		var newReservations = new Array();
 		
 		if (startDateTime < new Date()) {
@@ -243,7 +296,7 @@
 		}
 		
 		if (!clients.has(name)) {
-			newClient = clients.create(name, password);
+			newClients.push(clients.create(name, password));
 		}
 		else {
 			if (clients.checkPass(name, password) == false) {
@@ -270,11 +323,14 @@
 		startDateTime = getStartDateTimeFromInput();
 		endDateTime = getEndDateTimeFromInput();
 		
-		clients.add(newClient);
-		reservations.add(newReservations);
+	//	clients.add(newClients);
+		addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
+			alert(message);
+			filterEntriesBoxOnClick();
+		});
+	//	reservations.add(newReservations);
 		
-		filterEntriesBoxOnClick();
-		alert("New reservation was successfully added");
+		//alert("New reservation was successfully added");
 	}
 
 	function resetButtonOnClick() {
