@@ -57,8 +57,8 @@ function addData(name, password, startDateTime, endDateTime, period, reservation
 		newReservations.push(
 			{	id: nextId,
 				client: name,
-				startDateTime: startDateTime,
-				endDateTime: endDateTime,
+				startDateTime: startDateTime.getTime(),
+				endDateTime: endDateTime.getTime(),
 				sequence: sequence
 			});
 		
@@ -80,12 +80,39 @@ function addData(name, password, startDateTime, endDateTime, period, reservation
 			}
 }
 
-function cancelReservation() {
+function cancelReservation(id) {
 	
+	dataStorage.cancelReservation(id);
+	
+	for (var i = 0, j = reservationsArray.length; i < j; i++) {
+		if (reservationsArray[i].id == id) {
+			reservationsArray.splice(i, 1);
+			break;
+		}
+	}
+	
+	return	{
+				message: "Server message: reservation was successfully canceled",
+				canceledReservationsId: id
+			}
 }
 
-function cancelSequence() {
-
+function cancelSequence(sequence) {
+	
+	var currentDate = Date.now();
+	dataStorage.cancelSequence(sequence);
+	
+	for (var i = 0; i < reservationsArray.length; i++) {
+		if (reservationsArray[i].sequence == sequence && reservationsArray[i].startDateTime > currentDate) {
+			reservationsArray.splice(i, 1);
+			i--;
+		}
+	}
+	
+	return	{
+				message: "Server message: all reservations were successfully canceled",
+				canceledSequence: sequence
+			}
 }
 
 exports.getClients = getClients;

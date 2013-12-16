@@ -66,7 +66,7 @@
 			datepicker: false,
 			format:"H:i",
 			allowTimes:[
-				'00:00', '02:00', '03:00', '04:00', '05:00',
+				'01:00', '02:00', '03:00', '04:00', '05:00',
 				'06:00', '07:00', '08:00', '09:00', '10:00'
 			]
 		});
@@ -122,14 +122,13 @@
 			clients.add(loadedClients);
 			
 			onLoad();
-	
 		}, "json");
 	}
 	
 	function addData(name, password, startDateTime, endDateTime, period, reservationsNumber, onAdd) {
 	
-		$.get("/add", {client: name, password: password, startDateTime: startDateTime, 
-			endDateTime: endDateTime, period: period, reservationsNumber: reservationsNumber}, 
+		$.get("/add", {client: name, password: password, startDateTime: startDateTime.getTime(), 
+			endDateTime: endDateTime.getTime(), period: period, reservationsNumber: reservationsNumber}, 
 			function(data) {
 			
 				var loadedReservations = data.reservations;		
@@ -143,18 +142,30 @@
 				clients.add(loadedClients);
 				
 				onAdd(data.message);
+		}, "json");
+	}
+	
+	function cancelReservation(id, onCancelReservation) {
+		
+		$.get("/cancelReservation", {id: id}, function(data) {
 			
-				/*for (var i = 0, j = data.length; i < j; i++) {
-					loadedReservations.push(reservations.create(data[i].id, data[i].client, 
-						new Date(data[i].start_date_time.year, data[i].start_date_time.month, data[i].start_date_time.day,
-							data[i].start_date_time.hour, data[i].start_date_time.minute),
-						new Date(data[i].end_date_time.year, data[i].end_date_time.month, data[i].end_date_time.day,
-							data[i].end_date_time.hour, data[i].end_date_time.minute),	
-						data[i].sequence));
-				}	
-				
-				reservations.add(loadedReservations);	*/
+			var canceledReservationId = data.canceledReservationId;		
+			if (canceledReservationId != undefined) {
+				reservations.cancel(canceledReservationId);
+			}
+			onCancelReservation(data.message);
+		}, "json");
+	}
+	
+	function cancelSequence(sequence, onCancelSequence) {
+	
+		$.get("/cancelSequence", {sequence: sequence}, function(data) {
 			
+			var canceledSequence = data.canceledSequence;		
+			if (canceledSequence != undefined) {
+				reservations.cancelSequence(canceledSequence);
+			}
+			onCancelSequence(data.message);
 		}, "json");
 	}
 
@@ -323,14 +334,10 @@
 		startDateTime = getStartDateTimeFromInput();
 		endDateTime = getEndDateTimeFromInput();
 		
-	//	clients.add(newClients);
 		addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
 			alert(message);
 			filterEntriesBoxOnClick();
 		});
-	//	reservations.add(newReservations);
-		
-		//alert("New reservation was successfully added");
 	}
 
 	function resetButtonOnClick() {
@@ -374,14 +381,18 @@
 				  
 					buttons: {
 						"Cancel only this reservation": function() {
-								reservations.cancel(id);
-								reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								cancelReservation(id, function(message) {
+									alert(message);
+									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								});
 								$( this ).dialog( "close" );
 							},
 							
 						"Cancel all sequence": function() {
-								reservations.cancelSequence(reservationToCancel.sequence);
-								reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								cancelSequence(reservationToCancel.sequence, function(message) {
+									alert(message);
+									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								});
 								$( this ).dialog( "close" );
 							},
 							

@@ -12,12 +12,6 @@ function getClients() {
 function getReservations() {
 
 	var reservations = require(reservationsFile);
-	/*for (var i = 0; i < reservations.length; i++) {
-		reservations[i].startDateTime = new Date(reservations[i].startDateTime.year, reservations[i].startDateTime.month, reservations[i].startDateTime.day,
-						reservations[i].startDateTime.hour, reservations[i].startDateTime.minute);
-		reservations[i].endDateTime = new Date(reservations[i].endDateTime.year, reservations[i].endDateTime.month, reservations[i].endDateTime.day,
-						reservations[i].endDateTime.hour, reservations[i].endDateTime.minute);
-	}*/
 	return reservations;
 }
 
@@ -27,34 +21,47 @@ function addClients(newClients) {
 		return;
 	}	
 		
-	var clients = require(clientsFile);
-	clients = clients.concat(newClients)	
-		
-	jf.writeFile(clientsFile, clients, function(err) {
-		console.log(err);
-	});
+	var clients = jf.readFileSync(clientsFile);
+	clients = clients.concat(newClients);	
+	
+	jf.writeFileSync(clientsFile, clients);	
 }
 
 function addReservations(newReservations) {
 	
-	if (newReservations.length == 0) {
-		return;
+	var reservations = jf.readFileSync(reservationsFile);
+	reservations = reservations.concat(newReservations);	
+	
+	jf.writeFileSync(reservationsFile, reservations);	
+}
+
+function cancelReservation(id) {
+	
+	var reservations = jf.readFileSync(reservationsFile);
+	
+	for (var i = 0, j = reservations.length; i < j; i++) {
+		if (reservations[i].id == id) {
+			reservations.splice(i, 1);
+			break;
+		}
+	}
+		
+	jf.writeFileSync(reservationsFile, reservations);	
+}
+
+function cancelSequence(sequence) {
+
+	var currentDate = new Date();
+	var reservations= jf.readFileSync(reservationsFile);
+	
+	for (var i = 0; i < reservations.length; i++) {
+		if (reservations[i].sequence == sequence && reservations[i].startDateTime > currentDate) {
+			reservations.splice(i, 1);
+			i--;
+		}
 	}
 	
-	var reservations = require(reservationsFile);
-	reservations = reservations.concat(newReservations)	
-		
-	jf.writeFile(reservationsFile, reservations, function(err) {
-		console.log(err);
-	});
-}
-
-function cancelReservation() {
-
-}
-
-function cancelSequence() {
-
+	jf.writeFileSync(reservationsFile, reservations);	
 }
 
 exports.getClients = getClients;

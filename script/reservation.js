@@ -9,17 +9,7 @@
 		this.sequence = sequence;
 	}
 
-	var reservationsArray = new Array();/* = [
-		new Reservation(1, "Client_1", new Date(2013, 11, 10, 06, 00), new Date(2013, 11, 10, 09, 00), 0),
-		new Reservation(2, "Client_1", new Date(2013, 11, 11, 17, 50), new Date(2013, 11, 11, 19, 20), 0),	
-		new Reservation(3, "Client_2", new Date(2013, 11, 12, 16, 30), new Date(2013, 11, 12, 19, 00), 1),
-		new Reservation(4, "Client_1", new Date(2013, 11, 13, 13, 00), new Date(2013, 11, 13, 15, 00), 0),
-		new Reservation(5, "Client_2", new Date(2013, 11, 14, 16, 30), new Date(2013, 11, 14, 19, 00), 1),
-		new Reservation(6, "Client_2", new Date(2013, 11, 09, 16, 30), new Date(2013, 11, 09, 19, 00), 1)
-	];*/
-	
-	var nextId = 7;
-	var nextSequence = 2;
+	var reservationsArray = new Array();
 	
 	window.initVariables().initReservations( {
 		
@@ -54,18 +44,6 @@
 	}
 	
 	function addFunction(newReservations) {
-		
-		/*for (var i = 0, j = newReservations.length; i < j; i++) {
-			if (j > 1) {
-				newReservations[i].sequence = nextSequence;
-			}
-			newReservations[i].id = nextId;
-			reservationsArray.push(newReservations[i]);
-			nextId++;
-		}
-		if (j > 1) {
-			nextSequence++;
-		}*/
 		reservationsArray = reservationsArray.concat(newReservations);
 	}
 	
@@ -73,8 +51,8 @@
 			
 		for (var i = 0, j = reservationsArray.length; i < j; i++) {
 			if (reservationsArray[i].id == id) {
-					reservationsArray.splice(i, 1);
-					break;
+				reservationsArray.splice(i, 1);
+				break;
 			}
 		}
 	}
@@ -85,8 +63,8 @@
 	
 		for (var i = 0; i < reservationsArray.length; i++) {
 			if (reservationsArray[i].sequence == sequence && reservationsArray[i].startDateTime > currentDate) {
-					reservationsArray.splice(i, 1);
-					i--;
+				reservationsArray.splice(i, 1);
+				i--;
 			}
 		}
 	}				

@@ -2,71 +2,50 @@
   {
     "id": 1,
     "client": "Client_1",
-    "startDateTime": "2013-12-16T08:00:00.000Z",
-    "endDateTime": "2013-12-16T11:00:00.000Z",
+    "startDateTime": 1387893600000,
+    "endDateTime": 1387900800000,
     "sequence": 0
   },
   {
     "id": 2,
     "client": "Client_1",
-    "startDateTime": "2013-12-17T12:00:00.000Z",
-    "endDateTime": "2013-12-17T16:00:00.000Z",
+    "startDateTime": 1388034000000,
+    "endDateTime": 1388048400000,
     "sequence": 0
   },
   {
     "id": 3,
     "client": "Client_2",
-    "startDateTime": "2013-12-17T17:00:00.000Z",
-    "endDateTime": "2013-12-17T19:00:00.000Z",
+    "startDateTime": 1387792800000,
+    "endDateTime": 1387796400000,
     "sequence": 1
   },
   {
     "id": 4,
-    "client": "Client_1",
-    "startDateTime": "2013-12-18T08:40:00.000Z",
-    "endDateTime": "2013-12-18T10:20:00.000Z",
-    "sequence": 0
+    "client": "Client_2",
+    "startDateTime": 1387965600000,
+    "endDateTime": 1387969200000,
+    "sequence": 1
   },
   {
     "id": 5,
     "client": "Client_2",
-    "startDateTime": "2013-12-17T17:00:00.000Z",
-    "endDateTime": "2013-12-17T19:00:00.000Z",
+    "startDateTime": 1388138400000,
+    "endDateTime": 1388142000000,
     "sequence": 1
   },
   {
     "id": 6,
     "client": "Client_2",
-    "startDateTime": "2013-12-17T17:00:00.000Z",
-    "endDateTime": "2013-12-17T19:00:00.000Z",
-    "sequence": 1
+    "startDateTime": 1387713600000,
+    "endDateTime": 1387720800000,
+    "sequence": 0
   },
   {
     "id": 7,
-    "client": "Kammerer",
-    "startDateTime": "2015-07-12T14:00:00.000Z",
-    "endDateTime": "2015-07-12T16:00:00.000Z",
-    "sequence": 2
-  },
-  {
-    "id": 8,
-    "client": "Kammerer",
-    "startDateTime": "2015-07-12T14:00:00.000Z",
-    "endDateTime": "2015-07-12T16:00:00.000Z",
-    "sequence": 2
-  },
-  {
-    "id": 9,
-    "client": "Kammerer",
-    "startDateTime": "2015-07-12T14:00:00.000Z",
-    "endDateTime": "2015-07-12T16:00:00.000Z",
-    "sequence": 2
-  },
-  {
-    "id": 10,
-    "client": "Kammerer",
-    "startDateTime": "2015-07-12T14:00:00.000Z",
-    "endDateTime": "2015-07-12T16:00:00.000Z",
-    "sequence": 2
+    "client": "Client_1",
+    "startDateTime": 1387976400000,
+    "endDateTime": 1387987200000,
+    "sequence": 0
   }
 ]

@@ -21,10 +21,32 @@ function add(request, response) {
 	result = dataHandlers.addData(
 				urlParams.query.client,
 				urlParams.query.password,
-				new Date(urlParams.query.startDateTime),
-				new Date(urlParams.query.endDateTime),
-				urlParams.query.period,
-				reservationsNumber = urlParams.query.reservationsNumber);
+				new Date(parseInt(urlParams.query.startDateTime)),
+				new Date(parseInt(urlParams.query.endDateTime)),
+				parseInt(urlParams.query.period),
+				parseInt(urlParams.query.reservationsNumber));
+	
+	response.writeHead(200, {"Content-Type": "application/json",});
+	response.write(JSON.stringify(result)); 
+	response.end();
+}
+
+function cancelReservation(request, response) {
+
+	var urlParams = url.parse(request.url, true);
+	
+	result = dataHandlers.cancelReservation(urlParams.query.id);
+	
+	response.writeHead(200, {"Content-Type": "application/json",});
+	response.write(JSON.stringify(result)); 
+	response.end();
+}
+
+function cancelSequence(request, response) {
+
+	var urlParams = url.parse(request.url, true);
+	
+	result = dataHandlers.cancelSequence(urlParams.query.sequence);
 	
 	response.writeHead(200, {"Content-Type": "application/json",});
 	response.write(JSON.stringify(result)); 
@@ -34,3 +56,5 @@ function add(request, response) {
 
 exports.load = load;
 exports.add = add;
+exports.cancelReservation = cancelReservation;
+exports.cancelSequence = cancelSequence;
