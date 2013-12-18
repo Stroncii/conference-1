@@ -7,13 +7,7 @@
 	var reservations;
 	
 	//stores current date (can not take it direct from calendar widget)
-	function currentDate(dateParam) {
-		
-		if (dateParam != undefined) {
-			currentDate.date = dateParam;
-		}	
-		return currentDate.date;
-	}
+	var currentDate;
 
 	//add widgets on html page
 
@@ -28,9 +22,9 @@
 			
 		calendar.setOnSelectedDelegate(function(){
 				var obj = calendar.getSelectedDay(); 
-				currentDate(new Date(obj.year, obj.month - 1, obj.day)); 
+				currentDate = new Date(obj.year, obj.month - 1, obj.day); 
 				if ($("#filter_entries").get(0).checked) {
-					reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
+					reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 				}
 			});
 	}
@@ -65,7 +59,7 @@
 			return;
 		}
 
-		var startDateTime = new Date(currentDate());
+		var startDateTime = new Date(currentDate);
 		startDateTime.setHours(parseInt(startDateTimeArray[0]));
 		startDateTime.setMinutes(parseInt(startDateTimeArray[1]));
 		
@@ -156,7 +150,7 @@
 
 	$(document).ready(function() {
 		
-		currentDate(new Date());		//init current date
+		currentDate = new Date();		//init current date
 		
 		validators = namespace.validators;
 		clients = namespace.clients;
@@ -180,7 +174,7 @@
 		$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", "none");
 
 		loadData(function(){	
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());});
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);});
 	});
 
 	function checkName() {
@@ -222,7 +216,7 @@
 	}
 
 	function filterEntriesBoxOnClick() {
-		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, currentDate());
+		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, currentDate);
 	}
 
 	function reserveButtonOnClick() {
@@ -300,7 +294,7 @@
 		
 		addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
 			alert(message);
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 		});
 	}
 
@@ -350,7 +344,7 @@
 						"Cancel only this reservation": function() {
 								cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 								});
 								$( this ).dialog( "close" );
 							},
@@ -358,7 +352,7 @@
 						"Cancel all sequence": function() {
 								cancelSequence(reservationToCancel.sequence, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 								});
 								$( this ).dialog( "close" );
 							},
@@ -384,7 +378,7 @@
 						"Yes": function() {
 								cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 								});
 								$( this ).dialog( "close" );
 							},
