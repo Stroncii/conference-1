@@ -1,4 +1,4 @@
-(function() {
+(function(namespace) {
 
 	function Reservation(id, client, startDateTime, endDateTime, sequence) {
 		
@@ -11,17 +11,17 @@
 
 	var reservationsArray = new Array();
 	
-	window.initVariables().initReservations( {
-		
-			create:				createFunction,
-			get: 				getFunction,			
-			add: 				addFunction,	
-			cancel: 			cancelFunction,			
-			cancelSequence: 	cancelSequenceFunction,			
+	namespace.reservations = { 
 	
-			showList:			showReservationsListFunction,
-			checkPossibility:	checkReservationPossibilityFunction,			
-	});
+		create:				createFunction,
+		get: 				getFunction,			
+		add: 				addFunction,	
+		cancel: 			cancelFunction,			
+		cancelSequence: 	cancelSequenceFunction,			
+	
+		showList:			showReservationsListFunction,
+		checkPossibility:	checkReservationPossibilityFunction
+	}
 	
 	function createFunction(id, client, startDateTime, endDateTime, sequence) {
 		return new Reservation(id, client, startDateTime, endDateTime, sequence);
@@ -146,4 +146,4 @@
 		return true;
 	}
 	
-})();//anonymous function
+})(myNamespace);//anonymous function

@@ -1,15 +1,14 @@
-﻿(function() {
+﻿(function(namespace) {
 	
-	window.initVariables().initValidators( {
-
+	namespace.validators = {
+	
 		validateName:				validateNameFunction,
 		validatePassword:			validatePasswordFunction,
 		validateStartDateTime:		validateStartDateTimeFunction, 
 		validateDuration:			validateDurationFunction,
 		validatePeriod: 			validatePeriodFunction,
 		validateReservationsNumber: validateReservationsNumberFunction
-	
-	});
+	}
 	
 	function validateRegEx(regex, input, hintField, hintMessage) {
 		// See if the input data validates OK
@@ -125,4 +124,4 @@
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}	
 	
-})();//anonymous function
+})(myNamespace);//anonymous function

@@ -1,27 +1,10 @@
-﻿(function($) {
+﻿var myNamespace = myNamespace || {};
+
+(function(namespace) {
 	
 	var validators;
 	var clients;
 	var reservations;
-
-	function initVariables() {
-		
-		return {
-		
-			initValidators: function(validatorsParam) {
-				validators = validatorsParam;
-			},
-			
-			initClients: function(clientsParam) {
-				clients = clientsParam;
-			},
-			
-			initReservations: function(reservationsParam) {
-				reservations = reservationsParam;
-			}
-		}
-	}
-	window.initVariables = initVariables;
 	
 	//stores current date (can not take it direct from calendar widget)
 	function currentDate(dateParam) {
@@ -174,6 +157,10 @@
 	$(document).ready(function() {
 		
 		currentDate(new Date());		//init current date
+		
+		validators = namespace.validators;
+		clients = namespace.clients;
+		reservations = namespace.reservations;
 		
 		placeCalendar();
 		placeStartDateTimePicker();
@@ -430,4 +417,4 @@
 		
 	}//cancel button click
 	
-})(jQuery);
+})(myNamespace);

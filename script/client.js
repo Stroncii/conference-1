@@ -1,4 +1,4 @@
-(function() {
+(function(namespace) {
 
 	function Client(name, password) {
 		
@@ -9,13 +9,13 @@
 	var clientsArray = new Array();
 	var namesArray = new Array();
 		
-	window.initVariables().initClients( {
-		
-			create:		createFunction,		
-			add:		addFunction,
-			checkPass:	checkPassFunction,		
-			has: hasFunction
-	});
+	namespace.clients = {
+	
+		create:	createFunction,		
+		add:		addFunction,	
+		checkPass:	checkPassFunction,
+		has: 		hasFunction
+	}	
 	
 	function createFunction(name, password) {
 		return new Client(name, password);
@@ -48,4 +48,4 @@
 		}
 	}
 	
-})();
+})(myNamespace);
