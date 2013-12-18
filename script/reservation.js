@@ -69,7 +69,7 @@
 		}
 	}				
 	
-	function showReservationsListFunction(target, cancelAction, dateFilter) {
+	function showReservationsListFunction(target, cancelAction, needFiltration, dateFilter) {
 		
 		var reservationsList = reservationsArray;
 		
@@ -83,7 +83,7 @@
 		
 		for (var i = 0; i < reservationsList.length; i++) {
 			
-			if (dateFilter != undefined) {
+			if (needFiltration != undefined && needFiltration != false && dateFilter != undefined) {
 				if (dateFilter.getDate() != reservationsList[i].startDateTime.getDate() ||
 						dateFilter.getMonth() != reservationsList[i].startDateTime.getMonth() ||
 						dateFilter.getFullYear() != reservationsList[i].startDateTime.getFullYear()) {

@@ -30,7 +30,7 @@
 				var obj = calendar.getSelectedDay(); 
 				currentDate(new Date(obj.year, obj.month - 1, obj.day)); 
 				if ($("#filter_entries").get(0).checked) {
-					reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick, currentDate());
+					reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
 				}
 			});
 	}
@@ -59,7 +59,7 @@
 
 	function getStartDateTimeFromInput() {
 		
-		var startDateTimeArray = document.getElementById("start_date_time_input").value.split(":");
+		var startDateTimeArray = $("#start_date_time_input").get(0).value.split(":");
 		
 		if (startDateTimeArray.length != 2) {
 			return;
@@ -75,7 +75,7 @@
 	function getEndDateTimeFromInput() {
 
 		var startDateTime = getStartDateTimeFromInput();
-		var durationArray = document.getElementById("duration_input").value.split(":");
+		var durationArray = $("#duration_input").get(0).value.split(":");
 			
 		if (startDateTime == undefined || durationArray.length != 2) {
 			return;
@@ -177,142 +177,119 @@
 		$("#reserve_button").on("click", reserveButtonOnClick);
 		$("#reset_button").on("click", resetButtonOnClick);
 		
-		repeatCheckBoxOnClick();
+		$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", "none");
+
 		loadData(function(){	
-			reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick)});
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());});
 	});
 
 	function checkName() {
 		
-		var inputField = document.getElementById("name_input");
-		var hintField = document.getElementById("name_hint"); 
-		
-		if (!validators.validateName(inputField, hintField)) {
+		var hintField = $(this).siblings(".hint_elem").get(0);
+		if (!validators.validateName(this, hintField)) {
 			return;
 		}	
-		hintField.innerHTML = (clients.has(inputField.value)) ? 
-			"Такой пользователь уже есть в базе (нужен его пароль)" : "Такого пользователя нет в базе (будет добавлен)";
+		hintField.innerHTML = (clients.has(this.value)) ? 
+			"This user is present in the database" : "This user is not present in the database (will be added)";
 	}
 
 	function checkPassword() {
-		validators.validatePassword(document.getElementById("password_input"), document.getElementById("password_hint"));
+		validators.validatePassword(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function checkStartDateTime() {	
-		validators.validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"));
+		validators.validateStartDateTime(this, $(this).siblings(".hint_elem").get(0));
 		//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 	}
 
 	function checkDuration() {
-		validators.validateDuration(document.getElementById("duration_input"), document.getElementById("duration_hint"));
+		validators.validateDuration(this, $(this).siblings(".hint_elem").get(0));
 		//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 	}
 
 	function checkPeriod() {
-		validators.validatePeriod(document.getElementById("period_input"), document.getElementById("period_hint"));
+		validators.validatePeriod(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function checkReservationsNumber() {
-		validators.validateReservationsNumber(document.getElementById("reservations_number_input"), document.getElementById("reservations_number_hint"));
+		validators.validateReservationsNumber(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function repeatCheckBoxOnClick() {
 		
-		var displayStyle = (document.getElementById("repeat_check_box").checked) ? "table-row" : displayStyle = "none";	
-		$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", displayStyle);
+		var displayStyle = (this.checked) ? "table-row" : displayStyle = "none";	
+		$(this).parent().nextAll(".whole_input_div").css("display", displayStyle);
 	}
 
 	function filterEntriesBoxOnClick() {
-		
-		if ($("#filter_entries").get(0).checked) {
-			reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick, currentDate());
-		}
-		else {
-			reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
-		}
+		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, currentDate());
 	}
 
 	function reserveButtonOnClick() {
 
-		if (!validators.validateName(document.getElementById("name_input"), document.getElementById("name_hint"))) {
-			document.getElementById("name_input").focus();
+		if (!validators.validateName($("#name_input").get(0), $("#name_hint").get(0))) {
+			$("#name_input").get(0).focus();
 			return;
 		}
-		if (!validators.validatePassword(document.getElementById("password_input"), document.getElementById("password_hint"))) {
-			document.getElementById("password_input").focus();
+		if (!validators.validatePassword($("#password_input").get(0), $("#password_hint").get(0))) {
+			$("#password_input").get(0).focus();
 			return;
 		}
-		if (!validators.validateStartDateTime(document.getElementById("start_date_time_input"), document.getElementById("start_date_time_hint"))) {
-			document.getElementById("start_date_time_input").focus();
+		if (!validators.validateStartDateTime($("#start_date_time_input").get(0), $("#start_date_time_hint").get(0))) {
+			$("#start_date_time_input").get(0).focus();
 			return;
 		}
-		if (!validators.validateDuration(document.getElementById("duration_input"), document.getElementById("duration_hint"))) {
-			document.getElementById("duration_input").focus();
+		if (!validators.validateDuration($("#duration_input").get(0), $("#duration_hint").get(0))) {
+			$("#duration_input").get(0).focus();
 			return;
 		}
 		
 		var period = 0;
 		var reservationsNumber = 1;
 		
-		if (document.getElementById("repeat_check_box").checked) {
+		if ($("#repeat_check_box").get(0).checked) {
 		
-			if (!validators.validatePeriod(document.getElementById("period_input"), document.getElementById("period_hint"))) {
-				document.getElementById("period_input").focus();
+			if (!validators.validatePeriod($("#period_input").get(0), $("#period_hint").get(0))) {
+				$("#period_input").get(0).focus();
 				return;
 			}
 			
-			if (!validators.validateReservationsNumber(document.getElementById("reservations_number_input"), document.getElementById("reservations_number_hint"))) {
-				document.getElementById("reservations_number_input").focus();
+			if (!validators.validateReservationsNumber($("#reservations_number_input").get(0), $("#reservations_number_hint").get(0))) {
+				$("#reservations_number_input").get(0).focus();
 				return;
 			}
 			
-			period = parseInt(document.getElementById("period_input").value);
+			period = parseInt($("#period_input").get(0).value);
 			if (period < 1 || period > 14) {
-				document.getElementById("period_hint").innerHTML = "Please enter a value between 1 and 14.";
+				$("#period_hint").get(0).innerHTML = "Please enter a value between 1 and 14.";
 				return;
 			}
 			
-			reservationsNumber = parseInt(document.getElementById("reservations_number_input").value);
+			reservationsNumber = parseInt($("#reservations_number_input").get(0).value);
 			if (reservationsNumber < 1 || reservationsNumber > 10) {
-				document.getElementById("reservations_number_hint").innerHTML = "Please enter a value between 1 and 10.";
+				$("#reservations_number_input").get(0).innerHTML = "Please enter a value between 1 and 10.";
 				return;
 			}
 		}
 		
-		var name = document.getElementById("name_input").value;
-		var password = document.getElementById("password_input").value;
+		var name = $("#name_input").get(0).value;
+		var password = $("#password_input").get(0).value;
 		var startDateTime = getStartDateTimeFromInput();
 		var endDateTime = getEndDateTimeFromInput();
 		
-		//var newClients = new Array();
-		//var newReservations = new Array();
-		
 		if (startDateTime < new Date()) {
-			document.getElementById("start_date_time_hint").innerHTML = "You can not reserve room behindhand!";
-			document.getElementById("start_date_time_input").focus();
+			$("#start_date_time_hint").get(0).innerHTML = "You can not reserve room behindhand!";
+			$("#start_date_time_input").get(0).focus();
 			return;
 		}
 		
-		/*if (!clients.has(name)) {
-			newClients.push(clients.create(name, password));
-		}
-		else {
-			if (clients.checkPass(name, password) == false) {
-				alert("Wrong password!");
-				return;
-			}
-		}
-		*/
 		for (var i = 0; i < reservationsNumber; i++) {
 		
 			if (!reservations.checkPossibility(startDateTime, endDateTime)) {
-				document.getElementById("start_date_time_hint").innerHTML = "This reservation covers another one!";
-				document.getElementById("start_date_time_input").focus();
+				$("#start_date_time_hint").get(0).innerHTML = "This reservation covers another one!";
+				$("#start_date_time_input").get(0).focus();
 				return;
 			}	
-			
-			/*var reservation = reservations.create(null, name, new Date(startDateTime), new Date(endDateTime), 0);
-			newReservations.push(reservation);*/
 			
 			startDateTime.setDate(startDateTime.getDate() + period);
 			endDateTime.setDate(endDateTime.getDate() + period);
@@ -323,7 +300,7 @@
 		
 		addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
 			alert(message);
-			filterEntriesBoxOnClick();
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
 		});
 	}
 
@@ -343,8 +320,8 @@
 			return;
 		}
 		
-		var name = document.getElementById("name_input").value;
-		var password = document.getElementById("password_input").value;
+		var name = $("#name_input").get(0).value;
+		var password = $("#password_input").get(0).value;
 		
 		var client = clients.getById(reservationToCancel.clientId);
 		
@@ -356,10 +333,7 @@
 			$(".cancel_hint[data-id='" + id + "']").text("This reservation was made by another user! You can not cancel it.");
 			return;
 		}
-	/*	if (clients.checkPass(name, password) == false) {
-			$(".cancel_hint[data-id='" + id + "']").text("Wrong password!");
-			return;
-		}*/
+
 		$(".cancel_hint[data-id='" + id + "']").text("");
 		
 		if (reservationToCancel.sequence != "0") {
@@ -376,7 +350,7 @@
 						"Cancel only this reservation": function() {
 								cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
 								});
 								$( this ).dialog( "close" );
 							},
@@ -384,7 +358,7 @@
 						"Cancel all sequence": function() {
 								cancelSequence(reservationToCancel.sequence, password, function(message) {
 									alert(message);
-									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
 								});
 								$( this ).dialog( "close" );
 							},
@@ -410,7 +384,7 @@
 						"Yes": function() {
 								cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate());
 								});
 								$( this ).dialog( "close" );
 							},
