@@ -1,58 +1,65 @@
 [
   {
     "id": 1,
-    "client": "Client_1",
+    "clientId": 1,
     "startDateTime": 1387893600000,
     "endDateTime": 1387900800000,
     "sequence": 0
   },
   {
     "id": 2,
-    "client": "Client_1",
+    "clientId": 1,
     "startDateTime": 1388034000000,
     "endDateTime": 1388048400000,
     "sequence": 0
   },
   {
-    "id": 3,
-    "client": "Client_2",
-    "startDateTime": 1387792800000,
-    "endDateTime": 1387796400000,
-    "sequence": 1
-  },
-  {
-    "id": 4,
-    "client": "Client_2",
-    "startDateTime": 1387965600000,
-    "endDateTime": 1387969200000,
-    "sequence": 1
-  },
-  {
-    "id": 5,
-    "client": "Client_2",
-    "startDateTime": 1388138400000,
-    "endDateTime": 1388142000000,
-    "sequence": 1
-  },
-  {
     "id": 6,
-    "client": "Client_2",
+    "clientId": 2,
     "startDateTime": 1387713600000,
     "endDateTime": 1387720800000,
     "sequence": 0
   },
   {
     "id": 7,
-    "client": "Client_1",
+    "clientId": 1,
     "startDateTime": 1387976400000,
     "endDateTime": 1387987200000,
     "sequence": 0
   },
   {
     "id": 8,
-    "client": "Client_1",
-    "startDateTime": 1387886400000,
-    "endDateTime": 1387890000000,
+    "clientId": 3,
+    "startDateTime": 1387882800000,
+    "endDateTime": 1387886400000,
+    "sequence": 0
+  },
+  {
+    "id": 9,
+    "clientId": 1,
+    "startDateTime": 1388314800000,
+    "endDateTime": 1388318400000,
+    "sequence": 0
+  },
+  {
+    "id": 11,
+    "clientId": 2,
+    "startDateTime": 1387951200000,
+    "endDateTime": 1387962000000,
+    "sequence": 1
+  },
+  {
+    "id": 12,
+    "clientId": 2,
+    "startDateTime": 1388124000000,
+    "endDateTime": 1388134800000,
+    "sequence": 1
+  },
+  {
+    "id": 16,
+    "clientId": 4,
+    "startDateTime": 1387861200000,
+    "endDateTime": 1387868400000,
     "sequence": 0
   }
 ]

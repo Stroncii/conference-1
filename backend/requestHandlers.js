@@ -35,7 +35,7 @@ function cancelReservation(request, response) {
 
 	var urlParams = url.parse(request.url, true);
 	
-	result = dataHandlers.cancelReservation(urlParams.query.id);
+	result = dataHandlers.cancelReservation(urlParams.query.id, urlParams.query.password);
 	
 	response.writeHead(200, {"Content-Type": "application/json",});
 	response.write(JSON.stringify(result)); 
@@ -46,7 +46,7 @@ function cancelSequence(request, response) {
 
 	var urlParams = url.parse(request.url, true);
 	
-	result = dataHandlers.cancelSequence(urlParams.query.sequence);
+	result = dataHandlers.cancelSequence(urlParams.query.sequence, urlParams.query.password);
 	
 	response.writeHead(200, {"Content-Type": "application/json",});
 	response.write(JSON.stringify(result)); 

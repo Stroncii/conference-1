@@ -115,22 +115,22 @@
 			function(data) {
 			
 				var loadedReservations = data.reservations;		
-				for (var i = 0, j = data.reservations.length; i < j; i++) {
-					loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
-					loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
-				}
-				reservations.add(loadedReservations);		
-				
 				var loadedClients = data.clients;
-				clients.add(loadedClients);
-				
+				if (loadedReservations != undefined && loadedClients != undefined) {
+					for (var i = 0, j = data.reservations.length; i < j; i++) {
+						loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
+						loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
+					}
+					reservations.add(loadedReservations);		
+					clients.add(loadedClients);
+				}	
 				onAdd(data.message);
 		}, "json");
 	}
 	
-	function cancelReservation(id, onCancelReservation) {
+	function cancelReservation(id, password, onCancelReservation) {
 		
-		$.get("/cancelReservation", {id: id}, function(data) {
+		$.get("/cancelReservation", {id: id, password: password}, function(data) {
 			
 			var canceledReservationId = data.canceledReservationId;		
 			if (canceledReservationId != undefined) {
@@ -140,9 +140,9 @@
 		}, "json");
 	}
 	
-	function cancelSequence(sequence, onCancelSequence) {
+	function cancelSequence(sequence, password, onCancelSequence) {
 	
-		$.get("/cancelSequence", {sequence: sequence}, function(data) {
+		$.get("/cancelSequence", {sequence: sequence, password: password}, function(data) {
 			
 			var canceledSequence = data.canceledSequence;		
 			if (canceledSequence != undefined) {
@@ -284,8 +284,8 @@
 		var startDateTime = getStartDateTimeFromInput();
 		var endDateTime = getEndDateTimeFromInput();
 		
-		var newClients = new Array();
-		var newReservations = new Array();
+		//var newClients = new Array();
+		//var newReservations = new Array();
 		
 		if (startDateTime < new Date()) {
 			document.getElementById("start_date_time_hint").innerHTML = "You can not reserve room behindhand!";
@@ -293,7 +293,7 @@
 			return;
 		}
 		
-		if (!clients.has(name)) {
+		/*if (!clients.has(name)) {
 			newClients.push(clients.create(name, password));
 		}
 		else {
@@ -302,7 +302,7 @@
 				return;
 			}
 		}
-		
+		*/
 		for (var i = 0; i < reservationsNumber; i++) {
 		
 			if (!reservations.checkPossibility(startDateTime, endDateTime)) {
@@ -311,8 +311,8 @@
 				return;
 			}	
 			
-			var reservation = reservations.create(null, name, new Date(startDateTime), new Date(endDateTime), 0);
-			newReservations.push(reservation);
+			/*var reservation = reservations.create(null, name, new Date(startDateTime), new Date(endDateTime), 0);
+			newReservations.push(reservation);*/
 			
 			startDateTime.setDate(startDateTime.getDate() + period);
 			endDateTime.setDate(endDateTime.getDate() + period);
@@ -346,14 +346,20 @@
 		var name = document.getElementById("name_input").value;
 		var password = document.getElementById("password_input").value;
 		
-		if (reservationToCancel.client != name) {
+		var client = clients.getById(reservationToCancel.clientId);
+		
+		if (client == null) {
+			$(".cancel_hint[data-id='" + id + "']").text("This reservation was made by unknown user (data structure error).");
+			return;
+		}
+		if ( client.name != name) {
 			$(".cancel_hint[data-id='" + id + "']").text("This reservation was made by another user! You can not cancel it.");
 			return;
 		}
-		if (clients.checkPass(name, password) == false) {
+	/*	if (clients.checkPass(name, password) == false) {
 			$(".cancel_hint[data-id='" + id + "']").text("Wrong password!");
 			return;
-		}
+		}*/
 		$(".cancel_hint[data-id='" + id + "']").text("");
 		
 		if (reservationToCancel.sequence != "0") {
@@ -368,7 +374,7 @@
 				  
 					buttons: {
 						"Cancel only this reservation": function() {
-								cancelReservation(id, function(message) {
+								cancelReservation(id, password, function(message) {
 									alert(message);
 									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
 								});
@@ -376,7 +382,7 @@
 							},
 							
 						"Cancel all sequence": function() {
-								cancelSequence(reservationToCancel.sequence, function(message) {
+								cancelSequence(reservationToCancel.sequence, password, function(message) {
 									alert(message);
 									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
 								});
@@ -402,8 +408,10 @@
 				  
 					buttons: {
 						"Yes": function() {
-								reservations.cancel(id);
-								reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								cancelReservation(id, password, function(message) {
+									alert(message);
+									reservations.showList(document.getElementById("reservations_list_div"), cancelButtonClick);
+								});
 								$( this ).dialog( "close" );
 							},
 							

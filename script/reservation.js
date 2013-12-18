@@ -1,9 +1,9 @@
 (function(namespace) {
 
-	function Reservation(id, client, startDateTime, endDateTime, sequence) {
+	function Reservation(id, clientId, startDateTime, endDateTime, sequence) {
 		
 		this.id = id;
-		this.client = client;
+		this.clientId = clientId;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
 		this.sequence = sequence;
@@ -21,10 +21,10 @@
 	
 		showList:			showReservationsListFunction,
 		checkPossibility:	checkReservationPossibilityFunction
-	}
+	}			
 	
-	function createFunction(id, client, startDateTime, endDateTime, sequence) {
-		return new Reservation(id, client, startDateTime, endDateTime, sequence);
+	function createFunction(id, clientId, startDateTime, endDateTime, sequence) {
+		return new Reservation(id, clientId, startDateTime, endDateTime, sequence);
 	}
 	
 	function getFunction(id) { 
@@ -93,6 +93,9 @@
 			
 			var buttonElementText = "";
 			
+			var client = namespace.clients.getById(reservationsList[i].clientId);
+			var clientName = (client == null) ? "Unknown (data structure error)" : client.name;
+			
 			if (reservationsList[i].startDateTime > currentDate) {			
 				buttonElementText = "<input type='button', class='cancel_button' data-id='" + 
 					reservationsList[i].id + "' value='Cancel' />" + 
@@ -116,8 +119,8 @@
 				reservationsList[i].endDateTime.shortTimeFormat() + "</span>" + buttonElementText +
 				"<div class='separator'></div>" + 
 				"<span class='title_elem'>Reserved by</span><span class='text_elem'>" + 
-				reservationsList[i].client + "</span>" + "</div>";
-		}
+				clientName + "</span>" + "</div>";
+		}	
 		
 		target.innerHTML = entriesText;
 		$(".cancel_button").click(cancelAction);
