@@ -16,13 +16,16 @@ h3 {
 }
 
 .ui-button .ui-button-text {
-  font-size:63.5% /* or whatever you want.*/
+  font-size:63.5%;
 }
 
 .ui-dialog .ui-dialog-title {
-  font-size:63.5% /* or whatever you want.*/
+  font-size:63.5%;
 }
 
+.ui-datepicker {
+	font-size:14px;
+}
 
 /*id*/
 

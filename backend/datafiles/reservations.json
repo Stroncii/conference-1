@@ -1,12 +1,5 @@
 [
   {
-    "id": 1,
-    "clientId": 1,
-    "startDateTime": 1387893600000,
-    "endDateTime": 1387900800000,
-    "sequence": 0
-  },
-  {
     "id": 2,
     "clientId": 1,
     "startDateTime": 1388034000000,

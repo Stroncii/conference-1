@@ -6,28 +6,18 @@
 	var clients;
 	var reservations;
 	var ajaxRequests;
-	
-	//stores current date (can not take it direct from calendar widget)
-	var currentDate;
 
 	//add widgets on html page
 
 	function placeCalendar() {
 
-		var calendar = new JsDatePick({
-				useMode:1,
-				isStripped:true,
-				target: "calendar_div",
-				cellColorScheme:"beige"
-			});
-			
-		calendar.setOnSelectedDelegate(function(){
-				var obj = calendar.getSelectedDay(); 
-				currentDate = new Date(obj.year, obj.month - 1, obj.day); 
+		$("#calendar_div").datepicker({
+			onSelect: function(dateText, inst) {
 				if ($("#filter_entries").get(0).checked) {
-					reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+					reservations.showList($("#reservations_list_div")[0], cancelButtonClick, true, $(this).datepicker("getDate"));
 				}
-			});
+			}
+		});
 	}
 
 	function placeStartDateTimePicker() {
@@ -60,7 +50,7 @@
 			return;
 		}
 
-		var startDateTime = new Date(currentDate);
+		var startDateTime = new Date($("#calendar_div").datepicker("getDate"));
 		startDateTime.setHours(parseInt(startDateTimeArray[0]));
 		startDateTime.setMinutes(parseInt(startDateTimeArray[1]));
 		
@@ -87,7 +77,7 @@
 
 	$(document).ready(function() {
 		
-		currentDate = new Date();		//init current date
+		//currentDate = new Date();		//init current date
 		
 		validators = namespace.validators;
 		clients = namespace.clients;
@@ -114,7 +104,8 @@
 		$("#reservations_list_div").prepend("<img src='img/wait.gif' />");
 		ajaxRequests.loadData(function(){	
 			$("#reservations_list_div").empty();
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+				$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 		});
 	});
 
@@ -157,7 +148,7 @@
 	}
 
 	function filterEntriesBoxOnClick() {
-		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, currentDate);
+		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, $("#calendar_div").datepicker("getDate"));
 	}
 
 	function reserveButtonOnClick() {
@@ -285,7 +276,8 @@
 						"Cancel only this reservation": function() {
 								ajaxRequests.cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
 							},
@@ -293,7 +285,8 @@
 						"Cancel all sequence": function() {
 								ajaxRequests.cancelSequence(reservationToCancel.sequence, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
 							},
@@ -319,7 +312,8 @@
 						"Yes": function() {
 								ajaxRequests.cancelReservation(id, password, function(message) {
 									alert(message);
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
 							},
