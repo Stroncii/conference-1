@@ -38,8 +38,9 @@
 		$.ajax({
 		
 			url: "/add", 
-			data: {client: name, password: password, startDateTime: startDateTime.getTime(), 
-					endDateTime: endDateTime.getTime(), period: period, reservationsNumber: reservationsNumber}, 
+			data: {client: name, password: password, startDateTime: startDateTime.getTime(),
+					endDateTime: endDateTime.getTime(), period: period, reservationsNumber: reservationsNumber},		
+					
 			success: function(data) {
 			
 				var loadedReservations = data.reservations;		

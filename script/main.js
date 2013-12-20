@@ -77,8 +77,6 @@
 
 	$(document).ready(function() {
 		
-		//currentDate = new Date();		//init current date
-		
 		validators = namespace.validators;
 		clients = namespace.clients;
 		reservations = namespace.reservations;
@@ -231,7 +229,7 @@
 				text: message, 
 				timeout: 3000
 			});
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
+			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 		});
 	}
 
