@@ -100,7 +100,13 @@
 	
 	function errorHandler(jqxhr, status, errorMsg) {
 	
-		alert("Request failed, status: " + status);
+		noty({
+			
+			layout: 'topRight',
+			type: 'error',
+			text: "Request failed, status: " + status, 
+			timeout: 3000
+		});
 	}
 	
 })(myNamespace);

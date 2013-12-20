@@ -6,7 +6,7 @@
 	var clients;
 	var reservations;
 	var ajaxRequests;
-
+	
 	//add widgets on html page
 
 	function placeCalendar() {
@@ -225,7 +225,12 @@
 		endDateTime = getEndDateTimeFromInput();
 		
 		ajaxRequests.addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
-			alert(message);
+			noty({
+				layout: 'topRight',
+				type: 'information',
+				text: message, 
+				timeout: 3000
+			});
 			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, currentDate);
 		});
 	}
@@ -275,7 +280,12 @@
 					buttons: {
 						"Cancel only this reservation": function() {
 								ajaxRequests.cancelReservation(id, password, function(message) {
-									alert(message);
+									noty({
+										layout: 'topRight',
+										type: 'information',
+										text: message, 
+										timeout: 3000
+									});
 									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
@@ -284,7 +294,12 @@
 							
 						"Cancel all sequence": function() {
 								ajaxRequests.cancelSequence(reservationToCancel.sequence, password, function(message) {
-									alert(message);
+									noty({
+										layout: 'topRight',
+										type: 'information',
+										text: message, 
+										timeout: 3000
+									});
 									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
@@ -311,7 +326,12 @@
 					buttons: {
 						"Yes": function() {
 								ajaxRequests.cancelReservation(id, password, function(message) {
-									alert(message);
+									noty({
+										layout: 'topRight',
+										type: 'information',
+										text: message, 
+										timeout: 3000
+									});
 									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
