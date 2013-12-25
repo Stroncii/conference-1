@@ -21,19 +21,48 @@
 		<script type="text/javascript" src="script/client.js"></script> 	
 		<script type="text/javascript" src="script/reservation.js"></script> 	
 		
+		<script type="text/javascript">
+		
+			$(document).ready(function() {
+
+				$("<div id='dialog-confirm'></div>").appendTo("body");
+				
+				myNamespace.main.placeCalendar();
+				myNamespace.main.placeStartDateTimePicker();
+				myNamespace.main.placeDurationDateTimePicker();
+				
+				$("#filter_entries").on("click", myNamespace.main.filterEntriesBoxOnClick);
+				$("#name_input").on("blur", myNamespace.main.checkName);
+				$("#password_input").on("blur", myNamespace.main.checkPassword);
+				$("#start_date_time_input").on("blur", myNamespace.main.checkStartDateTime);
+				$("#duration_input").on("blur", myNamespace.main.checkDuration);
+				$("#repeat_check_box").on("click", myNamespace.main.repeatCheckBoxOnClick);
+				$("#period_input").on("blur", myNamespace.main.checkPeriod);
+				$("#reservations_number_input").on("blur", myNamespace.main.checkReservationsNumber);
+				$("#reserve_button").on("click", myNamespace.main.reserveButtonOnClick);
+				$("#reset_button").on("click", myNamespace.main.resetButtonOnClick);
+				
+				$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", "none");
+
+				$("#reservations_list_div").prepend("<img src='img/wait.gif' />");
+				myNamespace.ajaxRequests.loadData(function(){	
+					$("#reservations_list_div").empty();
+					myNamespace.reservations.showList($("#reservations_list_div")[0], myNamespace.main.cancelButtonClick, 
+						$("#filter_entries")[0].checked, $("#calendar_div").datepicker("getDate"));
+				});
+			});
+		
+		</script>
+		
 		<title>Conference room reservation</title>
 	</head>
 	
 	<body>
-		<div id="dialog-confirm">
-		</div>
-	
 		<div id="main_container_div">
 			<div id="main_header_div">
 				<h2>Conference room reservation</h2>
 			</div>
 			<div id="date_div">
-				<div id="calendar_div"></div>
 				<div id="filter_checkbox_div">
 					<input type="checkbox" id="filter_entries" name="filter_entries">Filter by date<br>
 				</div>

@@ -2,19 +2,37 @@
 
 (function(namespace) {
 	
-	var validators;
-	var clients;
-	var reservations;
-	var ajaxRequests;
+	namespace.main = {
+	
+		placeCalendar: placeCalendar,
+		placeStartDateTimePicker: placeStartDateTimePicker,
+		placeDurationDateTimePicker: placeDurationDateTimePicker,
+		
+		checkName: checkName,
+		checkPassword: checkPassword,
+		checkStartDateTime: checkStartDateTime,
+		checkDuration: checkDuration,
+		checkPeriod: checkPeriod,
+		checkReservationsNumber: checkReservationsNumber,
+		
+		repeatCheckBoxOnClick: repeatCheckBoxOnClick,
+		filterEntriesBoxOnClick: filterEntriesBoxOnClick,
+		reserveButtonOnClick: reserveButtonOnClick,
+		resetButtonOnClick: resetButtonOnClick,
+		cancelButtonClick: cancelButtonClick
+	};
 	
 	//add widgets on html page
 
 	function placeCalendar() {
 
+		$("<div id='calendar_div'></div>").prependTo("#date_div");
+		
 		$("#calendar_div").datepicker({
 			onSelect: function(dateText, inst) {
 				if ($("#filter_entries").get(0).checked) {
-					reservations.showList($("#reservations_list_div")[0], cancelButtonClick, true, $(this).datepicker("getDate"));
+					namespace.reservations.showList(
+						$("#reservations_list_div")[0], cancelButtonClick, true, $(this).datepicker("getDate"));
 				}
 			}
 		});
@@ -75,68 +93,36 @@
 
 	//Event listeners
 
-	$(document).ready(function() {
-		
-		validators = namespace.validators;
-		clients = namespace.clients;
-		reservations = namespace.reservations;
-		ajaxRequests = namespace.ajaxRequests;
-		
-		placeCalendar();
-		placeStartDateTimePicker();
-		placeDurationDateTimePicker();
-		
-		$("#filter_entries").on("click", filterEntriesBoxOnClick);
-		$("#name_input").on("blur", checkName);
-		$("#password_input").on("blur", checkPassword);
-		$("#start_date_time_input").on("blur", checkStartDateTime);
-		$("#duration_input").on("blur", checkDuration);
-		$("#repeat_check_box").on("click", repeatCheckBoxOnClick);
-		$("#period_input").on("blur", checkPeriod);
-		$("#reservations_number_input").on("blur", checkReservationsNumber);
-		$("#reserve_button").on("click", reserveButtonOnClick);
-		$("#reset_button").on("click", resetButtonOnClick);
-		
-		$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", "none");
-
-		$("#reservations_list_div").prepend("<img src='img/wait.gif' />");
-		ajaxRequests.loadData(function(){	
-			$("#reservations_list_div").empty();
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
-				$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
-		});
-	});
-
 	function checkName() {
 		
 		var hintField = $(this).siblings(".hint_elem").get(0);
-		if (!validators.validateName(this, hintField)) {
+		if (!namespace.validators.validateName(this, hintField)) {
 			return;
 		}	
-		hintField.innerHTML = (clients.has(this.value)) ? 
+		hintField.innerHTML = (namespace.clients.has(this.value)) ? 
 			"This user is present in the database" : "This user is not present in the database (will be added)";
 	}
 
 	function checkPassword() {
-		validators.validatePassword(this, $(this).siblings(".hint_elem").get(0));
+		namespace.validators.validatePassword(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function checkStartDateTime() {	
-		validators.validateStartDateTime(this, $(this).siblings(".hint_elem").get(0));
+		namespace.validators.validateStartDateTime(this, $(this).siblings(".hint_elem").get(0));
 		//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 	}
 
 	function checkDuration() {
-		validators.validateDuration(this, $(this).siblings(".hint_elem").get(0));
+		namespace.validators.validateDuration(this, $(this).siblings(".hint_elem").get(0));
 		//checkReservationPossibility(getStartDateTimeFromInput(), getEndDateTimeFromInput());
 	}
 
 	function checkPeriod() {
-		validators.validatePeriod(this, $(this).siblings(".hint_elem").get(0));
+		namespace.validators.validatePeriod(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function checkReservationsNumber() {
-		validators.validateReservationsNumber(this, $(this).siblings(".hint_elem").get(0));
+		namespace.validators.validateReservationsNumber(this, $(this).siblings(".hint_elem").get(0));
 	}
 
 	function repeatCheckBoxOnClick() {
@@ -146,24 +132,24 @@
 	}
 
 	function filterEntriesBoxOnClick() {
-		reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, $("#calendar_div").datepicker("getDate"));
+		namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, $("#calendar_div").datepicker("getDate"));
 	}
 
 	function reserveButtonOnClick() {
 
-		if (!validators.validateName($("#name_input").get(0), $("#name_hint").get(0))) {
+		if (!namespace.validators.validateName($("#name_input").get(0), $("#name_hint").get(0))) {
 			$("#name_input").get(0).focus();
 			return;
 		}
-		if (!validators.validatePassword($("#password_input").get(0), $("#password_hint").get(0))) {
+		if (!namespace.validators.validatePassword($("#password_input").get(0), $("#password_hint").get(0))) {
 			$("#password_input").get(0).focus();
 			return;
 		}
-		if (!validators.validateStartDateTime($("#start_date_time_input").get(0), $("#start_date_time_hint").get(0))) {
+		if (!namespace.validators.validateStartDateTime($("#start_date_time_input").get(0), $("#start_date_time_hint").get(0))) {
 			$("#start_date_time_input").get(0).focus();
 			return;
 		}
-		if (!validators.validateDuration($("#duration_input").get(0), $("#duration_hint").get(0))) {
+		if (!namespace.validators.validateDuration($("#duration_input").get(0), $("#duration_hint").get(0))) {
 			$("#duration_input").get(0).focus();
 			return;
 		}
@@ -173,12 +159,12 @@
 		
 		if ($("#repeat_check_box").get(0).checked) {
 		
-			if (!validators.validatePeriod($("#period_input").get(0), $("#period_hint").get(0))) {
+			if (!namespace.validators.validatePeriod($("#period_input").get(0), $("#period_hint").get(0))) {
 				$("#period_input").get(0).focus();
 				return;
 			}
 			
-			if (!validators.validateReservationsNumber($("#reservations_number_input").get(0), $("#reservations_number_hint").get(0))) {
+			if (!namespace.validators.validateReservationsNumber($("#reservations_number_input").get(0), $("#reservations_number_hint").get(0))) {
 				$("#reservations_number_input").get(0).focus();
 				return;
 			}
@@ -209,7 +195,7 @@
 		
 		for (var i = 0; i < reservationsNumber; i++) {
 		
-			if (!reservations.checkPossibility(startDateTime, endDateTime)) {
+			if (!namespace.reservations.checkPossibility(startDateTime, endDateTime)) {
 				$("#start_date_time_hint").get(0).innerHTML = "This reservation covers another one!";
 				$("#start_date_time_input").get(0).focus();
 				return;
@@ -222,14 +208,14 @@
 		startDateTime = getStartDateTimeFromInput();
 		endDateTime = getEndDateTimeFromInput();
 		
-		ajaxRequests.addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
+		namespace.ajaxRequests.addData(name, password, startDateTime, endDateTime, period, reservationsNumber, function(message) {
 			noty({
 				layout: 'topRight',
 				type: 'information',
 				text: message, 
 				timeout: 3000
 			});
-			reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
+			namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 		});
 	}
 
@@ -242,7 +228,7 @@
 	function cancelButtonClick() {
 		
 		var id = parseInt($(this).data("id"));
-		var reservationToCancel = reservations.get(id);
+		var reservationToCancel = namespace.reservations.get(id);
 		
 		if (reservationToCancel == null) {
 			$(".cancel_hint[data-id='" + id + "']").text("Strangely, but it seems this reservation was already cancelled");
@@ -252,7 +238,7 @@
 		var name = $("#name_input").get(0).value;
 		var password = $("#password_input").get(0).value;
 		
-		var client = clients.getById(reservationToCancel.clientId);
+		var client = namespace.clients.getById(reservationToCancel.clientId);
 		
 		if (client == null) {
 			$(".cancel_hint[data-id='" + id + "']").text("This reservation was made by unknown user (data structure error).");
@@ -277,28 +263,28 @@
 				  
 					buttons: {
 						"Cancel only this reservation": function() {
-								ajaxRequests.cancelReservation(id, password, function(message) {
+								namespace.ajaxRequests.cancelReservation(id, password, function(message) {
 									noty({
 										layout: 'topRight',
 										type: 'information',
 										text: message, 
 										timeout: 3000
 									});
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+									namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
 							},
 							
 						"Cancel all sequence": function() {
-								ajaxRequests.cancelSequence(reservationToCancel.sequence, password, function(message) {
+								namespace.ajaxRequests.cancelSequence(reservationToCancel.sequence, password, function(message) {
 									noty({
 										layout: 'topRight',
 										type: 'information',
 										text: message, 
 										timeout: 3000
 									});
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+									namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
@@ -323,14 +309,14 @@
 				  
 					buttons: {
 						"Yes": function() {
-								ajaxRequests.cancelReservation(id, password, function(message) {
+								namespace.ajaxRequests.cancelReservation(id, password, function(message) {
 									noty({
 										layout: 'topRight',
 										type: 'information',
 										text: message, 
 										timeout: 3000
 									});
-									reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
+									namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
 										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
 								});
 								$( this ).dialog( "close" );
