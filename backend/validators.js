@@ -1,3 +1,4 @@
+//validate definition of all parameters
 function validateIsDefined(parametersArray, namesArray) {
 	
 	for(var i = 0, j = namesArray.length; i < j; i++) {
@@ -48,13 +49,13 @@ function validateDateTime(startDateTime, endDateTime) {
 		throw ({message: "Server message: one or both of date parameter are invalid (reservation should be continued 1..10 hours and 10, 20, 30 minutes)"});
 	}
 	
-	/*var minDuration = 1*60*60*1000;
+	var minDuration = 1*60*60*1000;
 	var maxDuration = 10*60*60*1000;
 	var duration = endDateTime.getTime() - startDateTime.getTime();
 	
 	if (duration < minDuration || duration > maxDuration) {
 		throw ({message: "Server message: one or both of date parameter are invalid (duration not between 1 and 10 hours)"});
-	}*/
+	}
 }
 
 function validatePeriod(period) {

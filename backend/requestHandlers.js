@@ -3,7 +3,8 @@ var url = require("url");
 var dataHandlers = require("./dataHandlers");
 var validators = require("./validators");
 
-
+//send information about reservations and clients to client side
+//this request has no parameters
 function load(request, response) {
 	
 	var result = {
@@ -15,6 +16,8 @@ function load(request, response) {
 	response.end();
 }
 
+//validate request parameters (definition, data type)
+//add new reservations
 function add(request, response) {
 	
 	var urlParams = url.parse(request.url, true);
@@ -51,6 +54,8 @@ function add(request, response) {
 	response.end();
 }
 
+//validate request parameters (definition, data type)
+//cancel one reservation
 function cancelReservation(request, response) {
 
 	var urlParams = url.parse(request.url, true);
@@ -77,6 +82,8 @@ function cancelReservation(request, response) {
 	response.end();
 }
 
+//validate request parameters (definition, data type)
+//cancel some reservations
 function cancelSequence(request, response) {
 
 	var urlParams = url.parse(request.url, true);

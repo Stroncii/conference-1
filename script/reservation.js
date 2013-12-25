@@ -128,19 +128,12 @@
 
 	function checkReservationPossibilityFunction(startDateTime, endDateTime) {
 		
-		var reservationsList = reservationsArray;
-		
-		if (startDateTime == undefined || endDateTime == undefined) {
-			return false;
-		}
-		
-		for (var i = 0, j = reservationsList.length; i < j; i++) {
+		for (var i = 0, j = reservationsArray.length; i < j; i++) {
 			
-			if ((reservationsList[i].startDateTime <= startDateTime && startDateTime <= reservationsList[i].endDateTime) ||
-				(reservationsList[i].startDateTime <= endDateTime   && endDateTime   <= reservationsList[i].endDateTime) ||
-				(startDateTime <= reservationsList[i].startDateTime && reservationsList[i].startDateTime <= endDateTime) ||
-				(startDateTime <= reservationsList[i].endDateTime   && reservationsList[i].endDateTime   <= endDateTime)) {
-				
+			if ((reservationsArray[i].startDateTime <= startDateTime && startDateTime <= reservationsArray[i].endDateTime) ||
+				(reservationsArray[i].startDateTime <= endDateTime   && endDateTime   <= reservationsArray[i].endDateTime) ||
+				(startDateTime <= reservationsArray[i].startDateTime && reservationsArray[i].startDateTime <= endDateTime) ||
+				(startDateTime <= reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   <= endDateTime)) {
 			//	alert(reservationsList[i].startDateTime + "\n" + reservationsList[i].endDateTime + "\n" + 
 			//			startDateTime + "\n" + endDateTime);
 				return false;
