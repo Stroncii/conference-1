@@ -12,7 +12,7 @@ function start(route, handle) {
 		route(handle, pathname, request, response);
 	}
 
-	connect.createServer().use(connect.static(__dirname + "/..")).use(onRequest).listen(80);
+	connect.createServer().use(connect.static(__dirname + "/../frontend")).use(onRequest).listen(80);
 	console.log("Ready on port 80");
 }
 
