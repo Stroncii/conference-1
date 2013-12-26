@@ -16,13 +16,17 @@
 			success: function(data) {
 			
 				var loadedReservations = data.reservations;		
-				for (var i = 0, j = data.reservations.length; i < j; i++) {
-					loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
-					loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
+				for (var i = 0, j = loadedReservations.length; i < j; i++) {
+					loadedReservations[i] = namespace.reservations.create(loadedReservations[i].id, 
+						loadedReservations[i].clientId, new Date(loadedReservations[i].startDateTime),
+						new Date(loadedReservations[i].endDateTime), loadedReservations[i].sequence);
 				}
 				namespace.reservations.add(loadedReservations);		
 				
-				var loadedClients = data.clients;
+				var loadedClients = data.clients;		
+				for (var i = 0, j = loadedClients.length; i < j; i++) {
+					loadedClients[i] = namespace.clients.create(loadedClients[i].id, loadedClients[i].name);
+				}
 				namespace.clients.add(loadedClients);
 				
 				onLoad();
@@ -47,10 +51,15 @@
 				var loadedClients = data.clients;
 				if (loadedReservations != undefined && loadedClients != undefined) {
 					for (var i = 0, j = data.reservations.length; i < j; i++) {
-						loadedReservations[i].startDateTime = new Date(loadedReservations[i].startDateTime);
-						loadedReservations[i].endDateTime = new Date(loadedReservations[i].endDateTime);
+						loadedReservations[i] = namespace.reservations.create(loadedReservations[i].id, 
+						loadedReservations[i].clientId, new Date(loadedReservations[i].startDateTime),
+						new Date(loadedReservations[i].endDateTime), loadedReservations[i].sequence);
 					}
 					namespace.reservations.add(loadedReservations);		
+					var loadedClients = data.clients;		
+					for (var i = 0, j = loadedClients.length; i < j; i++) {
+						oadedClients[i] = namespace.clients.create(loadedClients[i].id, loadedClients[i].name);
+					}
 					namespace.clients.add(loadedClients);
 				}	
 				onAdd(data.message);

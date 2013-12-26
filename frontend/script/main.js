@@ -31,8 +31,7 @@
 		$("#calendar_div").datepicker({
 			onSelect: function(dateText, inst) {
 				if ($("#filter_entries").get(0).checked) {
-					namespace.reservations.showList(
-						$("#reservations_list_div")[0], cancelButtonClick, true, $(this).datepicker("getDate"));
+					namespace.reservations.showList();
 				}
 			}
 		});
@@ -132,7 +131,7 @@
 	}
 
 	function filterEntriesBoxOnClick() {
-		namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, this.checked, $("#calendar_div").datepicker("getDate"));
+		namespace.reservations.showList();
 	}
 
 	function reserveButtonOnClick() {
@@ -215,7 +214,7 @@
 				text: message, 
 				timeout: 3000
 			});
-			namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, $("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
+			namespace.reservations.showList();
 		});
 	}
 
@@ -270,8 +269,7 @@
 										text: message, 
 										timeout: 3000
 									});
-									namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
-										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
+									namespace.reservations.showList();
 								});
 								$( this ).dialog( "close" );
 							},
@@ -316,8 +314,7 @@
 										text: message, 
 										timeout: 3000
 									});
-									namespace.reservations.showList($("#reservations_list_div").get(0), cancelButtonClick, 
-										$("#filter_entries").get(0).checked, $("#calendar_div").datepicker("getDate"));
+									namespace.reservations.showList();
 								});
 								$( this ).dialog( "close" );
 							},

@@ -69,61 +69,18 @@
 		}
 	}				
 	
-	function showReservationsListFunction(target, cancelAction, needFiltration, dateFilter) {
+	function showReservationsListFunction() {
 		
-		var reservationsList = reservationsArray;
-		
-		// First sort the reservationsList in chronological order
-		reservationsList.sort(function(reservation1, reservation2) { 
+		reservationsArray.sort(function(reservation1, reservation2) { 
 			return reservation1.startDateTime - reservation2.startDateTime; });
 		
-		var entriesText = "";
-		var coloredBackground = true;
-		var currentDate = new Date();
+		$("#reservations_list_div").empty();
+		$("#reservationsTmpl").tmpl(reservationsArray).appendTo("#reservations_list_div");
+		$(".cancel_button").click(namespace.main.cancelButtonClick);
 		
-		for (var i = 0; i < reservationsList.length; i++) {
-			
-			if (needFiltration != undefined && needFiltration != false && dateFilter != undefined) {
-				if (dateFilter.getDate() != reservationsList[i].startDateTime.getDate() ||
-						dateFilter.getMonth() != reservationsList[i].startDateTime.getMonth() ||
-						dateFilter.getFullYear() != reservationsList[i].startDateTime.getFullYear()) {
-					continue;
-				}
-			}
-			
-			var buttonElementText = "";
-			
-			var client = namespace.clients.getById(reservationsList[i].clientId);
-			var clientName = (client == null) ? "Unknown (data structure error)" : client.name;
-			
-			if (reservationsList[i].startDateTime > currentDate) {			
-				buttonElementText = "<input type='button', class='cancel_button' data-id='" + 
-					reservationsList[i].id + "' value='Cancel' />" + 
-					"<span class='cancel_hint' data-id='" + 
-					reservationsList[i].id + "'></span>";
-			}
-			
-			if (coloredBackground) {
-				entriesText += "<div class='whole_reservation_div' style='background-color: #DDDDDD'>";
-			}
-			else {
-				entriesText += "<div class='whole_reservation_div'>";
-			}
-			coloredBackground = !coloredBackground;
-			
-			entriesText += "<span class='title_elem'>On</span><span class='text_elem'>" + 
-				reservationsList[i].startDateTime.shortDateFormat() + "</span>" + 
-				"<div class='separator'></div>" + 
-				"<span class='title_elem'>Duration</span><span class='text_elem'>" + 
-				reservationsList[i].startDateTime.shortTimeFormat() + "-" + 
-				reservationsList[i].endDateTime.shortTimeFormat() + "</span>" + buttonElementText +
-				"<div class='separator'></div>" + 
-				"<span class='title_elem'>Reserved by</span><span class='text_elem'>" + 
-				clientName + "</span>" + "</div>";
-		}	
-		
-		target.innerHTML = entriesText;
-		$(".cancel_button").click(cancelAction);
+		for (var i = 0, reservationEntries = $(".whole_reservation_div"), j = reservationEntries.length; i < j; i++) {
+			reservationEntries[i].style.backgroundColor = (i % 2) ? "#DDDDDD" : "#FFFFFF";
+		}
 	}
 
 	function checkReservationPossibilityFunction(startDateTime, endDateTime) {
@@ -134,8 +91,6 @@
 				(reservationsArray[i].startDateTime <= endDateTime   && endDateTime   <= reservationsArray[i].endDateTime) ||
 				(startDateTime <= reservationsArray[i].startDateTime && reservationsArray[i].startDateTime <= endDateTime) ||
 				(startDateTime <= reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   <= endDateTime)) {
-			//	alert(reservationsList[i].startDateTime + "\n" + reservationsList[i].endDateTime + "\n" + 
-			//			startDateTime + "\n" + endDateTime);
 				return false;
 			}
 		}

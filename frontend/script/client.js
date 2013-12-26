@@ -1,11 +1,14 @@
 (function(namespace) {
 
-	function Client(name, password) {
+	function Client(id, name) {
 		
 		this.id = id;
 		this.name = name;
 	}
-
+	Client.prototype.toString = function() {
+		return this.name;
+	}
+	
 	var clientsArray = new Array();
 	var namesArray = new Array();
 	

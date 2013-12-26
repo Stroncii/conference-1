@@ -11,6 +11,7 @@
 		
 		<script type="text/javascript" src="script/jquery/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="script/jquery/jquery-ui-1.10.3.custom.js"></script>
+		<script type="text/javascript" src="script/jquery/jquery.tmpl.js"></script>
 		<script type="text/javascript" src="script/plugins/jquery.datetimepicker.js"></script>
 		<script type="text/javascript" src="script/plugins/noty/packaged/jquery.noty.packaged.min.js"></script>
 		
@@ -21,8 +22,7 @@
 		<script type="text/javascript" src="script/client.js"></script> 	
 		<script type="text/javascript" src="script/reservation.js"></script> 	
 		
-		<script type="text/javascript">
-		
+		<script type="text/javascript">	
 			$(document).ready(function() {
 
 				$("<div id='dialog-confirm'></div>").appendTo("body");
@@ -47,11 +47,48 @@
 				$("#reservations_list_div").prepend("<img src='img/wait.gif' />");
 				myNamespace.ajaxRequests.loadData(function(){	
 					$("#reservations_list_div").empty();
-					myNamespace.reservations.showList($("#reservations_list_div")[0], myNamespace.main.cancelButtonClick, 
-						$("#filter_entries")[0].checked, $("#calendar_div").datepicker("getDate"));
+					myNamespace.reservations.showList();
 				});
 			});
+			
+		</script>
 		
+		<script type="text/javascript">
+			(function(namespace) {
+				namespace.templates = {
+					checkCancelButtonVisibility: function(startDateTime) {
+						return (startDateTime > new Date());
+					},
+					checkReservationVisibility: function(startDateTime) {
+
+						var dateFilter = $("#calendar_div").datepicker("getDate");
+						
+						if ($("#filter_entries")[0].checked) {
+							
+							return !(dateFilter.getDate() != startDateTime.getDate() ||
+										dateFilter.getMonth() != startDateTime.getMonth() ||
+										dateFilter.getFullYear() != startDateTime.getFullYear());
+						}
+						return true;
+					}
+				}
+			})(myNamespace);
+		</script>
+			
+		<script id="reservationsTmpl" type="text/x-jquery-tmpl">
+			{{if myNamespace.templates.checkReservationVisibility(startDateTime)}}
+				<div class="whole_reservation_div">
+					<span class="title_elem">On</span><span class="text_elem">${startDateTime.shortDateFormat()}</span>
+					<div class="separator"></div>
+					<span class="title_elem">Duration</span><span class="text_elem">${startDateTime.shortTimeFormat()}-${endDateTime.shortTimeFormat()}</span>				
+					{{if myNamespace.templates.checkCancelButtonVisibility(startDateTime)}}
+						<input type="button", class="cancel_button" data-id="${id}" value="Cancel" />
+						<span class="cancel_hint" data-id="${id}"></span>
+					{{/if}}
+					<div class="separator"></div>
+					<span class="title_elem">Reserved by</span><span class="text_elem">${myNamespace.clients.getById(clientId)}</span>
+				</div>
+			{{/if}}	
 		</script>
 		
 		<title>Conference room reservation</title>
