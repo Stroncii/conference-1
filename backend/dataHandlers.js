@@ -37,8 +37,7 @@ function initData() {
 }
 
 //return arrays to request handler
-function getClients() {
-	
+function getClients() {	
 	return withoutPasswords(clientsArray);
 }
 
@@ -56,24 +55,26 @@ function addData(name, password, startDateTime, endDateTime, period, reservation
 	
 	var newReservationsOwner = getClientByName(name);
 	
+	//if reservation's owner isn't in database - create him
 	if (newReservationsOwner == null) {
 		newReservationsOwner = {id: nextClientId, name: name, password: password}
 		newClients.push(newReservationsOwner);
 		nextClientId++;
 	}
+	//check password
 	if (newReservationsOwner.password != password) {
 		return	{ message: "Server message: wrong password" };
 	}
-	
+	 
 	if (reservationsNumber > 1) {
 		sequence = nextSequence;
 		nextSequence++;
 	}
-	
+	//create one or more Reservation objects
 	for (var i = 0; i < reservationsNumber; i++) {	
 		
 		if (!checkReservationPossibility(startDateTime, endDateTime)) {
-			return { message: "This reservation covers another one!" };
+			return { message: "Server message: this reservation covers another one!" };
 		}
 		
 		newReservations.push(
@@ -88,10 +89,10 @@ function addData(name, password, startDateTime, endDateTime, period, reservation
 		startDateTime.setDate(startDateTime.getDate() + period);
 		endDateTime.setDate(endDateTime.getDate() + period);
 	}
-	
+	//store created client and reservations in database
 	dataStorage.addClients(newClients);
 	dataStorage.addReservations(newReservations);
-	
+	//return created client and reservations as one object
 	clientsArray = clientsArray.concat(newClients);
 	reservationsArray = reservationsArray.concat(newReservations);
 	
@@ -102,14 +103,17 @@ function addData(name, password, startDateTime, endDateTime, period, reservation
 			}
 }
 
-//validate id - find correspondent reservation and its owner
+//validate id - find corresponding reservation and its owner
 //if this reservation in array and not finished - remove it
 //from database and local array
-function cancelReservation(reservationId, password) {
+function cancelReservation(reservationId, name, password) {
 	
 	var client = getReservationOwner(reservationId);
 	if (client == null) {
 		return	{ message: "Server message: cannot find owner of this reservation" };
+	}
+	if (client.name != name) {
+		return	{ message: "Server message: This reservation was made by another user! You can not cancel it." };
 	}
 	if (client.password != password) {
 		return	{ message: "Server message: wrong password" };
@@ -137,14 +141,17 @@ function cancelReservation(reservationId, password) {
 			};
 }
 
-//validate sequence - find correspondent reservations and their owner
+//validate sequence - find corresponding reservations and their owner
 //if these reservations are in array and not finished - remove them
 //from database and local array
-function cancelSequence(sequence, password) {
+function cancelSequence(sequence, name, password) {
 
 	var client = getSequenceOwner(sequence);
 	if (client == null) {
 		return	{ message: "Server message: cannot find owner of this sequence"	};
+	}
+	if (client.name != name) {
+		return	{ message: "Server message: This reservation was made by another user! You can not cancel it." };
 	}
 	if (client.password != password) {
 		return	{ message: "Server message: wrong password" };
@@ -161,7 +168,7 @@ function cancelSequence(sequence, password) {
 	}
 	
 	return	{
-				message: "Server message: all reservations were successfully canceled",
+				message: "Server message: all unfinished reservations from this sequence were successfully cancelled",
 				canceledSequence: sequence
 			};
 }
@@ -232,7 +239,7 @@ function getClientByName(name) {
 	}
 	return null;
 }
-
+//return clientsArray without passwords (to send them to client side)
 function withoutPasswords(clients) {
 
 	var result = new Array();
@@ -243,18 +250,18 @@ function withoutPasswords(clients) {
 	
 	return result;
 }
-
+//see if reservation covers another one
 function checkReservationPossibility(startDateTime, endDateTime) {
 
 	for (var i = 0, j = reservationsArray.length; i < j; i++) {
 			
-			if ((reservationsArray[i].startDateTime <= startDateTime && startDateTime <= reservationsArray[i].endDateTime) ||
-				(reservationsArray[i].startDateTime <= endDateTime   && endDateTime   <= reservationsArray[i].endDateTime) ||
-				(startDateTime <= reservationsArray[i].startDateTime && reservationsArray[i].startDateTime <= endDateTime) ||
-				(startDateTime <= reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   <= endDateTime)) {
-		
-				return false;
-			}
+		if ((reservationsArray[i].startDateTime < startDateTime && startDateTime < reservationsArray[i].endDateTime) ||
+			(reservationsArray[i].startDateTime < endDateTime   && endDateTime   < reservationsArray[i].endDateTime) ||
+			(startDateTime < reservationsArray[i].startDateTime && reservationsArray[i].startDateTime < endDateTime) ||
+			(startDateTime < reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   < endDateTime)) {
+	
+			return false;
 		}
-		return true;
+	}
+	return true;
 }

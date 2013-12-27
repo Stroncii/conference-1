@@ -75,5 +75,12 @@
     "startDateTime": 1388757600000,
     "endDateTime": 1388761200000,
     "sequence": 6
+  },
+  {
+    "id": 33,
+    "clientId": 5,
+    "startDateTime": 1388476800000,
+    "endDateTime": 1388480400000,
+    "sequence": 0
   }
 ]

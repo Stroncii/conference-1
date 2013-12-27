@@ -25,12 +25,16 @@
 		<script type="text/javascript">	
 			$(document).ready(function() {
 
+				//add element needed for dialog window creation
 				$("<div id='dialog-confirm'></div>").appendTo("body");
 				
+				//place widgets on html page
+				//(calendar, startDateTimePicker, endDateTimePicker)
 				myNamespace.main.placeCalendar();
 				myNamespace.main.placeStartDateTimePicker();
 				myNamespace.main.placeDurationDateTimePicker();
 				
+				//bind DOM elements with event listeners
 				$("#filter_entries").on("click", myNamespace.main.filterEntriesBoxOnClick);
 				$("#name_input").on("blur", myNamespace.main.checkName);
 				$("#password_input").on("blur", myNamespace.main.checkPassword);
@@ -42,8 +46,10 @@
 				$("#reserve_button").on("click", myNamespace.main.reserveButtonOnClick);
 				$("#reset_button").on("click", myNamespace.main.resetButtonOnClick);
 				
+				//hide "period" and "reservations number" input fields
 				$("#repeat_check_box").parent().nextAll(".whole_input_div").css("display", "none");
 
+				//show wait.gif, send loadData request
 				$("#reservations_list_div").prepend("<img src='img/wait.gif' />");
 				myNamespace.ajaxRequests.loadData(function(){	
 					$("#reservations_list_div").empty();
@@ -54,15 +60,16 @@
 		</script>
 		
 		<script type="text/javascript">
+			//auxiliary functions for reservation entries generation
 			(function(namespace) {
 				namespace.templates = {
+					//show "cancel" button next to only unfinished reservations 
 					checkCancelButtonVisibility: function(startDateTime) {
 						return (startDateTime > new Date());
 					},
+					//show only today's reservations if it's needed
 					checkReservationVisibility: function(startDateTime) {
-
 						var dateFilter = $("#calendar_div").datepicker("getDate");
-						
 						if ($("#filter_entries")[0].checked) {
 							
 							return !(dateFilter.getDate() != startDateTime.getDate() ||

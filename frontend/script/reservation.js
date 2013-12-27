@@ -9,7 +9,7 @@
 		this.sequence = sequence;
 	}
 
-	var reservationsArray = new Array();
+	var reservationsArray = new Array(); //stores all Reservations objects
 	
 	namespace.reservations = { 
 	
@@ -23,30 +23,31 @@
 		checkPossibility:	checkReservationPossibilityFunction
 	}			
 	
+	//return new Reservation object
 	function createFunction(id, clientId, startDateTime, endDateTime, sequence) {
+	
 		return new Reservation(id, clientId, startDateTime, endDateTime, sequence);
 	}
 	
+	//get Reservation object from reservationsArray by id
+	//function returns null if there is no such object
 	function getFunction(id) { 
 			
-		if (id == undefined) {
-			return reservationsArray;
+		for (var i = 0, j = reservationsArray.length; i < j; i++) {
+			if (reservationsArray[i].id == id) {
+				return reservationsArray[i];
+			}
 		}
-		else {
-			var result = null;
-			for (var i = 0, j = reservationsArray.length; i < j; i++)
-				if (reservationsArray[i].id == id) {
-					result = reservationsArray[i];
-					break;
-				}
-			return result;
-		}
+		return null;
 	}
 	
+	//add array of Reservation objects to clientsArray
 	function addFunction(newReservations) {
+	
 		reservationsArray = reservationsArray.concat(newReservations);
 	}
 	
+	//delete one Reservation object from reservationsArray by id
 	function cancelFunction(id) {
 			
 		for (var i = 0, j = reservationsArray.length; i < j; i++) {
@@ -57,6 +58,7 @@
 		}
 	}
 	
+	//delete some Reservation objects from reservationsArray by sequence (only unfinished)
 	function cancelSequenceFunction(sequence) {
 				
 		var currentDate = new Date();
@@ -69,6 +71,7 @@
 		}
 	}				
 	
+	//generate list of reservations using jquery tmpl
 	function showReservationsListFunction() {
 		
 		reservationsArray.sort(function(reservation1, reservation2) { 
@@ -83,18 +86,19 @@
 		}
 	}
 
+	//see if reservation covers another one
 	function checkReservationPossibilityFunction(startDateTime, endDateTime) {
 		
 		for (var i = 0, j = reservationsArray.length; i < j; i++) {
 			
-			if ((reservationsArray[i].startDateTime <= startDateTime && startDateTime <= reservationsArray[i].endDateTime) ||
-				(reservationsArray[i].startDateTime <= endDateTime   && endDateTime   <= reservationsArray[i].endDateTime) ||
-				(startDateTime <= reservationsArray[i].startDateTime && reservationsArray[i].startDateTime <= endDateTime) ||
-				(startDateTime <= reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   <= endDateTime)) {
+			if ((reservationsArray[i].startDateTime < startDateTime && startDateTime < reservationsArray[i].endDateTime) ||
+				(reservationsArray[i].startDateTime < endDateTime   && endDateTime   < reservationsArray[i].endDateTime) ||
+				(startDateTime < reservationsArray[i].startDateTime && reservationsArray[i].startDateTime < endDateTime) ||
+				(startDateTime < reservationsArray[i].endDateTime   && reservationsArray[i].endDateTime   < endDateTime)) {
 				return false;
 			}
 		}
 		return true;
 	}
 	
-})(myNamespace);//anonymous function
+})(myNamespace);

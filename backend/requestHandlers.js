@@ -61,8 +61,9 @@ function cancelReservation(request, response) {
 	var urlParams = url.parse(request.url, true);
 	
 	try {
-		validators.validateIsDefined(urlParams.query, ["id", "password"]);
+		validators.validateIsDefined(urlParams.query, ["id", "name", "password"]);
 		validators.validateId(urlParams.query.id);
+		validators.validateClientName(urlParams.query.name);
 		validators.validatePassword(urlParams.query.password);
 	}
 	catch(e) {
@@ -75,7 +76,7 @@ function cancelReservation(request, response) {
 		return;
 	}
 	
-	var result = dataHandlers.cancelReservation(urlParams.query.id, urlParams.query.password);
+	var result = dataHandlers.cancelReservation(urlParams.query.id, urlParams.query.name, urlParams.query.password);
 	
 	response.writeHead(200, {"Content-Type": "application/json",});
 	response.write(JSON.stringify(result)); 
@@ -89,8 +90,9 @@ function cancelSequence(request, response) {
 	var urlParams = url.parse(request.url, true);
 	
 	try {
-		validators.validateIsDefined(urlParams.query, ["sequence", "password"]);
+		validators.validateIsDefined(urlParams.query, ["sequence", "name", "password"]);
 		validators.validateSequence(urlParams.query.sequence);
+		validators.validateClientName(urlParams.query.name);
 		validators.validatePassword(urlParams.query.password);
 	}
 	catch(e) {
@@ -103,7 +105,7 @@ function cancelSequence(request, response) {
 		return;
 	}
 	
-	var result = dataHandlers.cancelSequence(urlParams.query.sequence, urlParams.query.password);
+	var result = dataHandlers.cancelSequence(urlParams.query.sequence, urlParams.query.name, urlParams.query.password);
 	
 	response.writeHead(200, {"Content-Type": "application/json",});
 	response.write(JSON.stringify(result)); 

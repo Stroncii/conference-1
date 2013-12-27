@@ -62,12 +62,11 @@
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}
 	
-	function validateStartDateTimeFunction(inputField, hintField) {
-			
+	function validateStartDateTimeFunction(inputField, hintField) {		
 		// First see if the input value contains data
 		if (!validateNonEmpty(inputField, hintField))
 			return false;
-			
+		//Then see if format of input data correct: hh:mm	
 		var regExp =  /^([01]?[0-9]|2[0-3]):[0-5]\d$/;
 		var hintMessage = "Please enter a correct value.";
 		
@@ -81,12 +80,12 @@
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}
 	
-	 function validateDurationFunction(inputField, hintField) {
-			
+	 function validateDurationFunction(inputField, hintField) {	
 		// First see if the input value contains data
 		if (!validateNonEmpty(inputField, hintField))
 			return false;
 		
+		//Then see if format of input data correct: hh:mm
 		var regExp =  /^([01]?[0-9]|2[0-3]):[0-5]\d$/;
 		var hintMessage = "Please enter a correct value.";
 		
@@ -100,28 +99,28 @@
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}
 	
-	function validatePeriodFunction(inputField, hintField) {
-			
+	function validatePeriodFunction(inputField, hintField) {	
 		// First see if the input value contains data
 		if (!validateNonEmpty(inputField, hintField))
 			return false;
 		
-		var regExp =  /^\d{1,2}$/;
+		//Then see if format of input data correct
+		var regExp = /^(0?[1-9]|1[0-4])$/;
 		var hintMessage = "Please enter a correct value (1 - 14).";
 		
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}
 	
-	function validateReservationsNumberFunction(inputField, hintField) {
-			
+	function validateReservationsNumberFunction(inputField, hintField) {		
 		// First see if the input value contains data
 		if (!validateNonEmpty(inputField, hintField))
 			return false;
 		
-		var regExp =  /^\d{1,2}$/;
+		//Then see if format of input data correct
+		var regExp = /^(0?[1-9]|10)$/;
 		var hintMessage = "Please enter a correct value (1 - 10).";
 		
 		return validateRegEx(regExp, inputField.value, hintField, hintMessage);
 	}	
 	
-})(myNamespace);//anonymous function
+})(myNamespace);
